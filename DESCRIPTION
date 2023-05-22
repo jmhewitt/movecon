@@ -7,7 +7,7 @@ Author: Joshua Hewitt
 Maintainer: Joshua Hewitt <joshua.hewitt2@usda.gov>
 Description: Constrained animal movement modeling.
 License: CC0
-Suggests: testthat
+Suggests: testthat, stars
 LinkingTo: Rcpp (>= 1.0.10), RcppEigen (>= 0.3.3.9.3)
 Encoding: UTF-8
 LazyData: true
