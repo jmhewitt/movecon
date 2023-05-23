@@ -34,7 +34,7 @@ std::string directionToString(const CardinalDirection & direction) {
 }
 
 // [[Rcpp::export]]
-double TestDirectionalCovariate(std::string x, std::string y) {
+double Test__Directional_Covariate(std::string x, std::string y) {
     return CardinalDirectionOrientations::directional_persistence_covariate(
         stringToDirection(x), stringToDirection(y)
     );

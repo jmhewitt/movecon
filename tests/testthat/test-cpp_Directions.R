@@ -2,22 +2,22 @@
 # test: directional covariates are implemented correctly
 #
 
-expect_equal(TestDirectionalCovariate('north', 'north'), 1)
-expect_equal(TestDirectionalCovariate('north', 'east'), 0)
-expect_equal(TestDirectionalCovariate('north', 'south'), -1)
-expect_equal(TestDirectionalCovariate('north', 'west'), 0)
+expect_equal(Test__Directional_Covariate('north', 'north'), 1)
+expect_equal(Test__Directional_Covariate('north', 'east'), 0)
+expect_equal(Test__Directional_Covariate('north', 'south'), -1)
+expect_equal(Test__Directional_Covariate('north', 'west'), 0)
 
-expect_equal(TestDirectionalCovariate('east', 'north'), 0)
-expect_equal(TestDirectionalCovariate('east', 'east'), 1)
-expect_equal(TestDirectionalCovariate('east', 'south'), 0)
-expect_equal(TestDirectionalCovariate('east', 'west'), -1)
+expect_equal(Test__Directional_Covariate('east', 'north'), 0)
+expect_equal(Test__Directional_Covariate('east', 'east'), 1)
+expect_equal(Test__Directional_Covariate('east', 'south'), 0)
+expect_equal(Test__Directional_Covariate('east', 'west'), -1)
 
-expect_equal(TestDirectionalCovariate('south', 'north'), -1)
-expect_equal(TestDirectionalCovariate('south', 'east'), 0)
-expect_equal(TestDirectionalCovariate('south', 'south'), 1)
-expect_equal(TestDirectionalCovariate('south', 'west'), 0)
+expect_equal(Test__Directional_Covariate('south', 'north'), -1)
+expect_equal(Test__Directional_Covariate('south', 'east'), 0)
+expect_equal(Test__Directional_Covariate('south', 'south'), 1)
+expect_equal(Test__Directional_Covariate('south', 'west'), 0)
 
-expect_equal(TestDirectionalCovariate('west', 'north'), 0)
-expect_equal(TestDirectionalCovariate('west', 'east'), -1)
-expect_equal(TestDirectionalCovariate('west', 'south'), 0)
-expect_equal(TestDirectionalCovariate('west', 'west'), 1)
+expect_equal(Test__Directional_Covariate('west', 'north'), 0)
+expect_equal(Test__Directional_Covariate('west', 'east'), -1)
+expect_equal(Test__Directional_Covariate('west', 'south'), 0)
+expect_equal(Test__Directional_Covariate('west', 'west'), 1)
