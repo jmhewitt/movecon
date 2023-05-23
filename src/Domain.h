@@ -85,8 +85,6 @@ struct RookDirectionalStatespace {
      * between states facilitate fast transitions on the state space.  Each 
      * location is associated with a covariate vector.
      * 
-     * TODO: Add constraints to the spatial domain.
-     * 
      * @param eastings vector of easting coordinates in monotonic order, either
      *   increasing or decreasing
      * @param northings vector of northing coordinates in monotonic order, either 
@@ -97,11 +95,17 @@ struct RookDirectionalStatespace {
      *  columns. The northing coordinates are the outer loop, and the easting
      *  coordinates are the inner loop.  The first block of columns iterates
      *  over all easting coordinates for the first northing coordinate, etc.
+     * @param linear_constraint locations and associated states will only 
+     *  be included in the state space if the dot product between the 
+     *  linear_constraint vector and the covariates at the location is 
+     *  non-negative (i.e., greater than or equal to 0).  The linear_constraint
+     *  can be set to the zero-vector to model unconstrained domains.
     */
     RookDirectionalStatespace(
         const Rcpp::NumericVector & eastings,
         const Rcpp::NumericVector & northings,
-        Rcpp::NumericMatrix & covariates
+        Rcpp::NumericMatrix & covariates,
+        Rcpp::NumericVector & linear_constraint
     );
 };
 

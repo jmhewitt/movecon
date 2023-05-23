@@ -3,7 +3,8 @@
 RookDirectionalStatespace::RookDirectionalStatespace(
     const Rcpp::NumericVector & eastings, 
     const Rcpp::NumericVector & northings,
-    Rcpp::NumericMatrix & covariates
+    Rcpp::NumericMatrix & covariates,
+    Rcpp::NumericVector & linear_constraint
 ) {
 
     /* 
@@ -35,12 +36,25 @@ RookDirectionalStatespace::RookDirectionalStatespace(
     }
     
     // prepare to associate covariate information with locations
-    auto covariates_it = covariates.begin();
     std::size_t p = covariates.rows();
+    auto covariates_it = covariates.begin() - p;
 
-    // build grid and initialize statespace
+    // access the linear constraint as a vector
+    Eigen::Map<Eigen::VectorXd> linear_constraint_vec(
+        linear_constraint.begin(), linear_constraint.size()
+    );
+
+    // build grid
     for(std::size_t j = 0; j < northings_len; ++j) {
         for(std::size_t i = 0;  i < eastings_len; ++i) {
+
+            // update pointers
+            covariates_it += p;
+
+            // skip location if linear constraint is not satisfied
+            Eigen::Map<Eigen::VectorXd> x(covariates_it, p);
+            if(linear_constraint_vec.dot(x) < 0)
+                continue;
         
             // initialize grid cell; address never changes b/c grid is std::map
             Location & cell = grid[LocationIndices(i,j)];
@@ -49,61 +63,89 @@ RookDirectionalStatespace::RookDirectionalStatespace(
             cell.easting = eastings[i];
             cell.northing = northings[j];
             new (&(cell.x)) Eigen::Map<Eigen::VectorXd>(covariates_it, p);
+        }
+    }
 
-            //
-            // initialize states associated with cell
-            //
+    // initialize states associated with grid cells
+    for(auto& map_entry : grid) {
 
-            // cell can be reached from a more southern location
-            if(min_northing < cell.northing) {
-                StateType state;
-                state.properties.location = &cell;
-                state.properties.last_movement_direction = north;
-                states[StateKey(north,i,j)] = state;
-            }
+        std::size_t easting_ind = map_entry.first.first;
+        std::size_t northing_ind = map_entry.first.second;
+        Location & cell = map_entry.second;
 
-            // cell can be reached from a more northern location
-            if(cell.northing < max_northing) {
-                StateType state;
-                state.properties.location = &cell;
-                state.properties.last_movement_direction = south;
-                states[StateKey(south,i,j)] = state;
-            }
+        // define neighbor keys
+        LocationIndices southern_neighbor(
+            easting_ind, northing_ind - north_step
+        );
+        LocationIndices northern_neighbor(
+            easting_ind, northing_ind + north_step
+        );
+        LocationIndices western_neighbor(
+            easting_ind - east_step, northing_ind
+        );
+        LocationIndices eastern_neighbor(
+            easting_ind + east_step, northing_ind
+        );
+        
+        // cell can be reached from a more southern location
+        if(grid.count(southern_neighbor) > 0) {
+            StateType state;
+            state.properties.location = &cell;
+            state.properties.last_movement_direction = north;
+            states[StateKey(north,easting_ind,northing_ind)] = state;
+        }
 
-            // cell can be reached from a more western location
-            if(min_easting < cell.easting) {
-                StateType state;
-                state.properties.location = &cell;
-                state.properties.last_movement_direction = east;
-                states[StateKey(east,i,j)] = state;
-            }
+        // cell can be reached from a more northern location
+        if(grid.count(northern_neighbor) > 0) {
+            StateType state;
+            state.properties.location = &cell;
+            state.properties.last_movement_direction = south;
+            states[StateKey(south,easting_ind,northing_ind)] = state;
+        }
 
-            // cell can be reached from a more eastern location
-            if(cell.easting < max_easting) {
-                StateType state;
-                state.properties.location = &cell;
-                state.properties.last_movement_direction = west;
-                states[StateKey(west,i,j)] = state;
-            }
+        // cell can be reached from a more western location
+        if(grid.count(western_neighbor) > 0) {
+            StateType state;
+            state.properties.location = &cell;
+            state.properties.last_movement_direction = east;
+            states[StateKey(east,easting_ind,northing_ind)] = state;
+        }
 
-            // update pointers
-            covariates_it += p;
+        // cell can be reached from a more eastern location
+        if(grid.count(eastern_neighbor) > 0) {
+            StateType state;
+            state.properties.location = &cell;
+            state.properties.last_movement_direction = west;
+            states[StateKey(west,easting_ind,northing_ind)] = state;
         }
     }
 
     // initialize connections between states 
     // (i.e., link allowable movement combinations on the grid)
     for(auto& map_entry : states) {
+
         std::size_t easting_ind = std::get<1>(map_entry.first);
         std::size_t northing_ind = std::get<2>(map_entry.first);
         StateType & state = map_entry.second;
 
+        // define movement keys
+        StateKey eastern_movement = StateKey(
+            east, easting_ind + east_step, northing_ind
+        );
+        StateKey western_movement = StateKey(
+            west, easting_ind - east_step, northing_ind
+        );
+        StateKey northern_movement = StateKey(
+            north, easting_ind, northing_ind + north_step
+        );
+        StateKey southern_movement = StateKey(
+            south, easting_ind, northing_ind - north_step
+        );
+
         // allow movement to the east
-        if(state.properties.location->easting < max_easting) {
+        if(states.count(eastern_movement) > 0) {
             // state associated with movement to eastern neighbor
-            StateType & nbr = states.at(
-                StateKey(east, easting_ind + east_step, northing_ind)
-            );
+            StateType & nbr = states.at(eastern_movement);
             // forward link
             state.to.insert(&nbr);
             // backward link
@@ -111,11 +153,9 @@ RookDirectionalStatespace::RookDirectionalStatespace(
         }
 
         // allow movement to the west
-        if(min_easting < state.properties.location->easting) {
+        if(states.count(western_movement) > 0) {
             // state associated with movement to western neighbor
-            StateType & nbr = states.at(
-                StateKey(west, easting_ind - east_step, northing_ind)
-            );
+            StateType & nbr = states.at(western_movement);
             // forward link
             state.to.insert(&nbr);
             // backward link
@@ -123,11 +163,9 @@ RookDirectionalStatespace::RookDirectionalStatespace(
         }
 
         // allow movement to the south
-        if(min_northing < state.properties.location->northing) {
+        if(states.count(southern_movement) > 0) {
             // state associated with movement to southern neighbor
-            StateType & nbr = states.at(
-                StateKey(south, easting_ind, northing_ind - north_step)
-            );
+            StateType & nbr = states.at(southern_movement);
             // forward link
             state.to.insert(&nbr);
             // backward link
@@ -135,11 +173,9 @@ RookDirectionalStatespace::RookDirectionalStatespace(
         }
 
         // allow movement to the north
-        if(state.properties.location->northing < max_northing) {
+        if(states.count(northern_movement) > 0) {
             // state associated with movement to northern neighbor
-            StateType & nbr = states.at(
-                StateKey(north, easting_ind, northing_ind + north_step)
-            );
+            StateType & nbr = states.at(northern_movement);
             // forward link
             state.to.insert(&nbr);
             // backward link
@@ -168,10 +204,11 @@ RookDirectionalStatespace::RookDirectionalStatespace(
 Rcpp::XPtr<RookDirectionalStatespace> build_statespace(
     Rcpp::NumericVector & eastings, 
     Rcpp::NumericVector & northings, 
-    Rcpp::NumericMatrix & covariates
+    Rcpp::NumericMatrix & covariates,
+    Rcpp::NumericVector & linear_constraint
 ) {
     RookDirectionalStatespace * statespace = new RookDirectionalStatespace(
-        eastings, northings, covariates
+        eastings, northings, covariates, linear_constraint
     );
     return Rcpp::XPtr<RookDirectionalStatespace>(statespace, true);
 }

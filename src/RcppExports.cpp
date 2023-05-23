@@ -13,15 +13,16 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // build_statespace
-Rcpp::XPtr<RookDirectionalStatespace> build_statespace(Rcpp::NumericVector& eastings, Rcpp::NumericVector& northings, Rcpp::NumericMatrix& covariates);
-RcppExport SEXP _movecon_build_statespace(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP covariatesSEXP) {
+Rcpp::XPtr<RookDirectionalStatespace> build_statespace(Rcpp::NumericVector& eastings, Rcpp::NumericVector& northings, Rcpp::NumericMatrix& covariates, Rcpp::NumericVector& linear_constraint);
+RcppExport SEXP _movecon_build_statespace(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP covariatesSEXP, SEXP linear_constraintSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type eastings(eastingsSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type northings(northingsSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type covariates(covariatesSEXP);
-    rcpp_result_gen = Rcpp::wrap(build_statespace(eastings, northings, covariates));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type linear_constraint(linear_constraintSEXP);
+    rcpp_result_gen = Rcpp::wrap(build_statespace(eastings, northings, covariates, linear_constraint));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -54,7 +55,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 3},
+    {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 4},
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
     {NULL, NULL, 0}
