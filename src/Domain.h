@@ -10,6 +10,8 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 
+#include "Directions.h"
+
 /**
  * Basic description for spatial information
 */
@@ -64,7 +66,7 @@ struct State {
 struct RookDirectionalStatespace {
     
     // define neighborhoods and movement with respect to rook moves
-    enum Direction{north, east, south, west};
+    typedef CardinalDirection Direction;
     typedef DirectionalPersistence<Direction, Location*> LocalMovement;
     
     // grid is a collection of locations

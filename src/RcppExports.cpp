@@ -12,6 +12,18 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// TestDirectionalCovariate
+double TestDirectionalCovariate(std::string x, std::string y);
+RcppExport SEXP _movecon_TestDirectionalCovariate(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type x(xSEXP);
+    Rcpp::traits::input_parameter< std::string >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(TestDirectionalCovariate(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // build_statespace
 Rcpp::XPtr<RookDirectionalStatespace> build_statespace(Rcpp::NumericVector& eastings, Rcpp::NumericVector& northings, Rcpp::NumericMatrix& covariates, Rcpp::NumericVector& linear_constraint);
 RcppExport SEXP _movecon_build_statespace(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP covariatesSEXP, SEXP linear_constraintSEXP) {
@@ -55,6 +67,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_movecon_TestDirectionalCovariate", (DL_FUNC) &_movecon_TestDirectionalCovariate, 2},
     {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 4},
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},

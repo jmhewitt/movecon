@@ -244,43 +244,6 @@ Rcpp::List extract_statespace_location(
 }
 
 /**
- * Convert a direction string to a CTDS domain object type
-*/
-RookDirectionalStatespace::Direction stringToDirection(
-    const std::string & direction
-) {
-    if(direction.compare("north") == 0) {
-        return RookDirectionalStatespace::Direction::north;
-    } else if(direction.compare("east") == 0) {
-        return RookDirectionalStatespace::Direction::east;
-    } else if(direction.compare("south") == 0) {
-        return RookDirectionalStatespace::Direction::south;
-    } else if(direction.compare("west") == 0) {
-        return RookDirectionalStatespace::Direction::west;
-    }
-    Rcpp::stop("Argument direction contains an invalid value");
-}
-
-/**
- * Format a CTDS domain object direction type for printing
-*/
-std::string directionToString(
-    const RookDirectionalStatespace::Direction & direction
-) {
-    switch(direction) {
-        case RookDirectionalStatespace::Direction::north:
-            return "north";
-        case RookDirectionalStatespace::Direction::east:
-            return "east";
-        case RookDirectionalStatespace::Direction::south:
-            return "south";
-        case RookDirectionalStatespace::Direction::west:
-            return "west";
-    }
-    Rcpp::stop("String conversion is not defined for argument direction");
-}
-
-/**
  * Format the location-direction pair information from a CTDS domain state 
  * object for viewing in R
 */
