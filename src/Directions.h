@@ -12,7 +12,7 @@ class CardinalDirectionOrientations {
 
     private:
 
-        const double orientations[4][4] = {
+        constexpr static const double orientations[4][4] = {
             { 1,  0, -1,  0}, // north vs. north, east, south, west
             { 0,  1,  0, -1}, // east vs. north, east, south, west
             {-1,  0,  1,  0}, // south vs. north, east, south, west
@@ -21,7 +21,7 @@ class CardinalDirectionOrientations {
 
     public:
 
-        double directional_persistence_covariate(
+        constexpr static double directional_persistence_covariate(
             const CardinalDirection & x,
             const CardinalDirection & y
         ) {
