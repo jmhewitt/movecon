@@ -114,3 +114,30 @@ if(FALSE) {
   # ratio shows that caching is slower than direct evaluation
   mean(cache_times$time)/mean(no_cache_times$time)
 }
+
+#
+# test: transition rates are evaluated as expected
+#
+
+# random covariates, for demonstration purposes
+set.seed(2023)
+beta = rnorm(n = nrow(covariates), sd = .01)
+
+# manually compute transition rate
+location = extract_statespace_location(
+  statespace = statespace, 
+  easting_ind = test_inds['easting_ind'], 
+  northing_ind =test_inds['northing_ind']
+)
+tx_rate_manual = exp(sum(location$covariates * beta))
+  
+# compute transition rate through C++ structures
+tx_rate = Test__Location_Based_Movement_Transition_Rate(
+  statespace = statespace, 
+  last_movement_direction = last_movement_direction, 
+  easting_ind = test_inds['easting_ind'], 
+  northing_ind =test_inds['northing_ind'],
+  beta = beta
+)
+
+expect_equal(tx_rate_manual, tx_rate)

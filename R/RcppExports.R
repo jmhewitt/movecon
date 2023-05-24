@@ -29,3 +29,7 @@ Test__Directional_Transition_Probability_No_Cache <- function(statespace, last_m
     .Call(`_movecon_Test__Directional_Transition_Probability_No_Cache`, statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, reps)
 }
 
+Test__Location_Based_Movement_Transition_Rate <- function(statespace, last_movement_direction, easting_ind, northing_ind, beta) {
+    .Call(`_movecon_Test__Location_Based_Movement_Transition_Rate`, statespace, last_movement_direction, easting_ind, northing_ind, beta)
+}
+

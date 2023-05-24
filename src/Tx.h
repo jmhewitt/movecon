@@ -52,4 +52,18 @@ struct directional_transition_probabilities {
 
 };
 
+template<typename State>
+struct location_based_movement {
+
+    /**
+     * Evaluate Hewitt et. al. (2023) eq. 14, which specifies a total transition
+     * rate using location-based covariates
+    */
+   template<typename VectorType> 
+   static double transition_rate(const State & state, const VectorType & beta) {
+    return std::exp(beta.dot(state.properties.location->x));
+   }
+
+};
+
 #endif

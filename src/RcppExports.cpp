@@ -112,6 +112,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Test__Location_Based_Movement_Transition_Rate
+double Test__Location_Based_Movement_Transition_Rate(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, Eigen::VectorXd beta);
+RcppExport SEXP _movecon_Test__Location_Based_Movement_Transition_Rate(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP betaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Location_Based_Movement_Transition_Rate(statespace, last_movement_direction, easting_ind, northing_ind, beta));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_movecon_Test__Directional_Covariate", (DL_FUNC) &_movecon_Test__Directional_Covariate, 2},
@@ -121,6 +136,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
     {"_movecon_Test__Directional_Transition_Probability_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_Cache, 6},
     {"_movecon_Test__Directional_Transition_Probability_No_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_No_Cache, 6},
+    {"_movecon_Test__Location_Based_Movement_Transition_Rate", (DL_FUNC) &_movecon_Test__Location_Based_Movement_Transition_Rate, 5},
     {NULL, NULL, 0}
 };
 
