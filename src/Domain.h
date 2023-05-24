@@ -23,6 +23,11 @@ struct Location {
     // covariates
     Eigen::Map<Eigen::VectorXd> x{nullptr, 0};
 
+    friend bool operator<(const Location & lhs, const Location & rhs) {
+        return std::tie(lhs.easting, lhs.northing) < 
+               std::tie(rhs.easting, rhs.northing);
+    }
+
 };
 
 /**
@@ -34,9 +39,16 @@ struct Location {
 template<typename Direction, typename Location>
 struct DirectionalPersistence {
 
+    typedef DirectionalPersistence<Direction, Location> SelfType;
+
     Direction last_movement_direction;
 
     Location location;
+
+    friend bool operator<(const SelfType & lhs, const SelfType & rhs) {
+        return std::tie(lhs.last_movement_direction, lhs.location) < 
+               std::tie(rhs.last_movement_direction, rhs.location);
+    }
 
 };
 
@@ -58,6 +70,11 @@ struct State {
 
     // states from which transitions originate, e.g., from the north
     std::set<SelfType*> from;
+
+    friend bool operator<(const SelfType & lhs, const SelfType & rhs) {
+        return lhs.properties < rhs.properties;
+    }
+
 };
 
 /**

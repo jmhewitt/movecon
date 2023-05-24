@@ -12,15 +12,15 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// TestDirectionalCovariate
-double TestDirectionalCovariate(std::string x, std::string y);
-RcppExport SEXP _movecon_TestDirectionalCovariate(SEXP xSEXP, SEXP ySEXP) {
+// Test__Directional_Covariate
+double Test__Directional_Covariate(std::string x, std::string y);
+RcppExport SEXP _movecon_Test__Directional_Covariate(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type x(xSEXP);
     Rcpp::traits::input_parameter< std::string >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(TestDirectionalCovariate(x, y));
+    rcpp_result_gen = Rcpp::wrap(Test__Directional_Covariate(x, y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -65,12 +65,62 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Test__Directional_Transition_Probabilities
+Eigen::VectorXd Test__Directional_Transition_Probabilities(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence);
+RcppExport SEXP _movecon_Test__Directional_Transition_Probabilities(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Directional_Transition_Probabilities(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Test__Directional_Transition_Probability_Cache
+Eigen::VectorXd Test__Directional_Transition_Probability_Cache(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, std::size_t reps);
+RcppExport SEXP _movecon_Test__Directional_Transition_Probability_Cache(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP repsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type reps(repsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Directional_Transition_Probability_Cache(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, reps));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Test__Directional_Transition_Probability_No_Cache
+Eigen::VectorXd Test__Directional_Transition_Probability_No_Cache(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, std::size_t reps);
+RcppExport SEXP _movecon_Test__Directional_Transition_Probability_No_Cache(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP repsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type reps(repsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Directional_Transition_Probability_No_Cache(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, reps));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_movecon_TestDirectionalCovariate", (DL_FUNC) &_movecon_TestDirectionalCovariate, 2},
+    {"_movecon_Test__Directional_Covariate", (DL_FUNC) &_movecon_Test__Directional_Covariate, 2},
     {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 4},
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
+    {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
+    {"_movecon_Test__Directional_Transition_Probability_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_Cache, 6},
+    {"_movecon_Test__Directional_Transition_Probability_No_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_No_Cache, 6},
     {NULL, NULL, 0}
 };
 
