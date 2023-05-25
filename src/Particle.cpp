@@ -33,14 +33,28 @@ Rcpp::List Test__Particle_Steps(
         )
     );
 
+    // construct transition rate evaluator
+    typedef location_based_movement<StateType, Eigen::VectorXd> 
+        base_transition_rate;
+    typedef uniformized_rate_evaluator<StateType, base_transition_rate> 
+        particle_transition_rate;
+    base_transition_rate location_based_rate(beta);
+    particle_transition_rate uniformized_transition_rate(
+        &location_based_rate, delta
+    );
+
+    // construct transition probability evaluator
+    typedef directional_transition_probabilities<
+        StateType, CardinalDirectionOrientations
+    > particle_transition_probability;
+    particle_transition_probability transition_prob(directional_persistence);
+
     // build a particle at the state
     Particle<
         StateType, 
-        location_based_movement<StateType>,
-        directional_transition_probabilities< 
-            StateType, CardinalDirectionOrientations
-        >
-    > particle;
+        particle_transition_rate,
+        particle_transition_probability
+    > particle(uniformized_transition_rate, transition_prob);
     particle.state = &state;
 
     // initialize output
@@ -49,7 +63,7 @@ Rcpp::List Test__Particle_Steps(
 
     // run forward simulation
     for(std::size_t i = 0; i < nsteps; ++i) {
-        particle.step(beta, delta, directional_persistence);
+        particle.step();
         path.push_back(format_state(*particle.state));
     }
 

@@ -24,90 +24,95 @@ Eigen::VectorXd Test__Directional_Transition_Probabilities(
         )
     );
 
-    typedef directional_transition_probabilities<
+    directional_transition_probabilities<
         StateType, CardinalDirectionOrientations
-    > probability_builder;
+    > probability_builder(directional_persistence);
 
-    return probability_builder::probabilities(state, directional_persistence);
+    return probability_builder.probabilities(state);
 }
 
-/**
- * Repeatedly compute transition probabilities for a given state in a 
- * statespace, using caching to avoid redundant computations
-*/
-// [[Rcpp::export]]
-Eigen::VectorXd Test__Directional_Transition_Probability_Cache(
-    Rcpp::XPtr<RookDirectionalStatespace> statespace, 
-    std::string last_movement_direction,
-    std::size_t easting_ind, 
-    std::size_t northing_ind,
-    double directional_persistence,
-    std::size_t reps
-) {
+// /**
+//  * Repeatedly compute transition probabilities for a given state in a 
+//  * statespace, using caching to avoid redundant computations
+// */
+// // [[Rcpp::export]]
+// Eigen::VectorXd Test__Directional_Transition_Probability_Cache(
+//     Rcpp::XPtr<RookDirectionalStatespace> statespace, 
+//     std::string last_movement_direction,
+//     std::size_t easting_ind, 
+//     std::size_t northing_ind,
+//     double directional_persistence,
+//     std::size_t reps
+// ) {
     
-    typedef RookDirectionalStatespace::StateKey StateKey;
-    typedef RookDirectionalStatespace::StateType StateType;
-    StateType & state = statespace->states.at(
-        StateKey(
-            stringToDirection(last_movement_direction), 
-            easting_ind, 
-            northing_ind
-        )
-    );
+//     typedef RookDirectionalStatespace::StateKey StateKey;
+//     typedef RookDirectionalStatespace::StateType StateType;
+//     StateType & state = statespace->states.at(
+//         StateKey(
+//             stringToDirection(last_movement_direction), 
+//             easting_ind, 
+//             northing_ind
+//         )
+//     );
 
-    typedef directional_transition_probabilities<
-        StateType, CardinalDirectionOrientations
-    > probability_builder;
+//     typedef directional_transition_probabilities<
+//         StateType, CardinalDirectionOrientations
+//     > probability_builder;
 
-    CacheDecorator<Eigen::VectorXd, StateType, double> cd(
-        probability_builder::probabilities  
-    );
+//     probability_builder pb(directional_persistence);
 
-    for(std::size_t i = 0; i < reps; ++i) {
-        cd(state, directional_persistence);
-    }
+//     CacheDecorator<Eigen::VectorXd, StateType, double> cd(
+//         &pb::probabilities
+//     );
 
-    return cd(state, directional_persistence);
-}
+//     for(std::size_t i = 0; i < reps; ++i) {
+//         cd(state);
+//     }
 
-/**
- * Repeatedly compute transition probabilities for a given state in a 
- * statespace, meant to facilitate comparison with performance using caching
-*/
-// [[Rcpp::export]]
-Eigen::VectorXd Test__Directional_Transition_Probability_No_Cache(
-    Rcpp::XPtr<RookDirectionalStatespace> statespace, 
-    std::string last_movement_direction,
-    std::size_t easting_ind, 
-    std::size_t northing_ind,
-    double directional_persistence,
-    std::size_t reps
-) {
+//     return cd(state);
+// }
+
+// /**
+//  * Repeatedly compute transition probabilities for a given state in a 
+//  * statespace, meant to facilitate comparison with performance using caching
+// */
+// // [[Rcpp::export]]
+// Eigen::VectorXd Test__Directional_Transition_Probability_No_Cache(
+//     Rcpp::XPtr<RookDirectionalStatespace> statespace, 
+//     std::string last_movement_direction,
+//     std::size_t easting_ind, 
+//     std::size_t northing_ind,
+//     double directional_persistence,
+//     std::size_t reps
+// ) {
     
-    typedef RookDirectionalStatespace::StateKey StateKey;
-    typedef RookDirectionalStatespace::StateType StateType;
-    StateType & state = statespace->states.at(
-        StateKey(
-            stringToDirection(last_movement_direction), 
-            easting_ind, 
-            northing_ind
-        )
-    );
+//     typedef RookDirectionalStatespace::StateKey StateKey;
+//     typedef RookDirectionalStatespace::StateType StateType;
+//     StateType & state = statespace->states.at(
+//         StateKey(
+//             stringToDirection(last_movement_direction), 
+//             easting_ind, 
+//             northing_ind
+//         )
+//     );
 
-    typedef directional_transition_probabilities<
-        StateType, CardinalDirectionOrientations
-    > probability_builder;
+//     typedef directional_transition_probabilities<
+//         StateType, CardinalDirectionOrientations
+//     > probability_builder;
 
-    CacheDecorator<Eigen::VectorXd, StateType, double> cd(
-        probability_builder::probabilities
-    );
+//     probability_builder pb(directional_persistence);
 
-    for(std::size_t i = 0; i < reps; ++i) {
-        probability_builder::probabilities(state, directional_persistence);
-    }
 
-    return probability_builder::probabilities(state, directional_persistence);
-}
+//     CacheDecorator<Eigen::VectorXd, StateType, double> cd(
+//         std::mem_fn(&probability_builder::probabilities)
+//     );
+
+//     for(std::size_t i = 0; i < reps; ++i) {
+//         pb.probabilities(state);
+//     }
+
+//     return pb.probabilities(state);
+// }
 
 /**
  * Compute transition rate for a given state in a statespace
@@ -131,7 +136,9 @@ double Test__Location_Based_Movement_Transition_Rate(
         )
     );
 
-    typedef location_based_movement<StateType> transition_rate_builder;
+    location_based_movement<
+        StateType, Eigen::VectorXd
+    > transition_rate_builder(beta);
 
-    return transition_rate_builder::transition_rate(state, beta);
+    return transition_rate_builder.transition_rate(state);
 }

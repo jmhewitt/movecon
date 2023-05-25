@@ -98,38 +98,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Test__Directional_Transition_Probability_Cache
-Eigen::VectorXd Test__Directional_Transition_Probability_Cache(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, std::size_t reps);
-RcppExport SEXP _movecon_Test__Directional_Transition_Probability_Cache(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP repsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
-    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
-    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type reps(repsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test__Directional_Transition_Probability_Cache(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, reps));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Test__Directional_Transition_Probability_No_Cache
-Eigen::VectorXd Test__Directional_Transition_Probability_No_Cache(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, std::size_t reps);
-RcppExport SEXP _movecon_Test__Directional_Transition_Probability_No_Cache(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP repsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
-    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
-    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type reps(repsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test__Directional_Transition_Probability_No_Cache(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, reps));
-    return rcpp_result_gen;
-END_RCPP
-}
 // Test__Location_Based_Movement_Transition_Rate
 double Test__Location_Based_Movement_Transition_Rate(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, Eigen::VectorXd beta);
 RcppExport SEXP _movecon_Test__Location_Based_Movement_Transition_Rate(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP betaSEXP) {
@@ -153,8 +121,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
-    {"_movecon_Test__Directional_Transition_Probability_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_Cache, 6},
-    {"_movecon_Test__Directional_Transition_Probability_No_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_No_Cache, 6},
     {"_movecon_Test__Location_Based_Movement_Transition_Rate", (DL_FUNC) &_movecon_Test__Location_Based_Movement_Transition_Rate, 5},
     {NULL, NULL, 0}
 };
