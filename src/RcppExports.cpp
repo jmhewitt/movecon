@@ -65,6 +65,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Test__Particle_Steps
+Rcpp::List Test__Particle_Steps(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, Eigen::VectorXd beta, double delta, std::size_t nsteps);
+RcppExport SEXP _movecon_Test__Particle_Steps(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP, SEXP nstepsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nsteps(nstepsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Particle_Steps(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, nsteps));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Test__Directional_Transition_Probabilities
 Eigen::VectorXd Test__Directional_Transition_Probabilities(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence);
 RcppExport SEXP _movecon_Test__Directional_Transition_Probabilities(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP) {
@@ -133,6 +151,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 4},
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
+    {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
     {"_movecon_Test__Directional_Transition_Probability_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_Cache, 6},
     {"_movecon_Test__Directional_Transition_Probability_No_Cache", (DL_FUNC) &_movecon_Test__Directional_Transition_Probability_No_Cache, 6},

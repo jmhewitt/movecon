@@ -128,4 +128,6 @@ struct RookDirectionalStatespace {
     );
 };
 
+Rcpp::List format_state(const RookDirectionalStatespace::StateType & state);
+
 #endif //MOVECON_DOMAIN_H
