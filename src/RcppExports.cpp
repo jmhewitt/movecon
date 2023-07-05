@@ -83,6 +83,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Test__Particle_Filter_Likelihood
+double Test__Particle_Filter_Likelihood(std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, std::size_t nparticles, double directional_persistence, Eigen::VectorXd beta, double delta);
+RcppExport SEXP _movecon_Test__Particle_Filter_Likelihood(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP nparticlesSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type eastings(eastingsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type northings(northingsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type semi_majors(semi_majorsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type semi_minors(semi_minorsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type orientations(orientationsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nparticles(nparticlesSEXP);
+    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Particle_Filter_Likelihood(eastings, northings, semi_majors, semi_minors, orientations, statespace, last_movement_direction, easting_ind, northing_ind, nparticles, directional_persistence, beta, delta));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Test__Directional_Transition_Probabilities
 Eigen::VectorXd Test__Directional_Transition_Probabilities(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence);
 RcppExport SEXP _movecon_Test__Directional_Transition_Probabilities(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP) {
@@ -113,6 +136,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// log_sum
+double log_sum(const std::vector<double>& x);
+RcppExport SEXP _movecon_log_sum(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::vector<double>& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(log_sum(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// log_cumsum
+std::vector<double> log_cumsum(const std::vector<double>& x);
+RcppExport SEXP _movecon_log_cumsum(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::vector<double>& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(log_cumsum(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_movecon_Test__Directional_Covariate", (DL_FUNC) &_movecon_Test__Directional_Covariate, 2},
@@ -120,8 +165,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
+    {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 13},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
     {"_movecon_Test__Location_Based_Movement_Transition_Rate", (DL_FUNC) &_movecon_Test__Location_Based_Movement_Transition_Rate, 5},
+    {"_movecon_log_sum", (DL_FUNC) &_movecon_log_sum, 1},
+    {"_movecon_log_cumsum", (DL_FUNC) &_movecon_log_cumsum, 1},
     {NULL, NULL, 0}
 };
 

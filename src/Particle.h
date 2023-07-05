@@ -58,6 +58,70 @@ struct Particle {
             } // transition logic
         } // step function
 
+        /**
+         * n-steps of forward-simulation using discretized tx. distribution
+        */
+        void step(std::size_t n) {
+            for(std::size_t i = 0; i < n; ++i)
+                step();
+        }
+
 };
+
+/**
+ * Wrapper to call a particle's member step function nstep times.
+*/
+template<typename Particle>
+class NStepProposal {
+    
+    private: 
+
+        std::size_t nsteps;
+
+    public:
+
+        NStepProposal(std::size_t n) : nsteps(n) { }
+
+        void propose(Particle & particle) {
+            particle.step(nsteps);
+        }
+
+};
+
+/**
+ * Create a family of identical proposal distributions
+ * 
+ * Although this is somewhat inefficient with memory, it is simple to implement
+ * 
+ * @param size Number of proposal distribution copies to put in the family
+ * @param nsteps Number of simulation steps for each proposal distribution
+*/
+template<typename Particle>
+std::vector<NStepProposal<Particle>> ConstantStepFamily(
+    std::size_t size, std::size_t nsteps
+) {
+    NStepProposal<Particle> proposal(nsteps);
+    std::vector<NStepProposal<Particle>> family(size, proposal);
+    return family;
+}
+
+/**
+ * Create a family of proposal distributions from a vector of step sizes
+ * 
+ * @param steps Vector specifying number of steps for each proposal distribution
+*/
+template<typename Particle, typename stepType>
+std::vector<NStepProposal<Particle>> DiscretizedTimestepFamily(
+    std::vector<std::size_t> steps
+) {
+    typedef NStepProposal<Particle> ProposalDistribution;
+    std::vector<ProposalDistribution> family(steps.size());
+    auto end = steps.end();
+    for(auto it = steps.begin(); it != end; ++it) {
+        ProposalDistribution tmp(*it);
+        family.emplace_back(tmp);
+    }
+    return family;
+}
 
 #endif

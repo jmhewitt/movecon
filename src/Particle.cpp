@@ -2,6 +2,7 @@
 #include "Domain.h"
 #include "Tx.h"
 #include "Directions.h"
+#include "log_add.h"
 
 #include <RcppEigen.h>
 
