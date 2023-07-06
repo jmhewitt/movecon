@@ -101,4 +101,53 @@ class uniformized_rate_evaluator {
         }
 };
 
+/**
+ * Read transition rates from State objects if defined, otherwise delegate
+ * evaluation to wrapped evaluator class
+*/
+template<typename State, typename transition_rate_evaluator>
+class state_cache_rate_evaluator {
+
+    private:
+
+        transition_rate_evaluator* m_evaluator;
+
+    public:
+
+        state_cache_rate_evaluator(transition_rate_evaluator & evaluator) :
+            m_evaluator(&evaluator) { }
+
+        double transition_rate(State & state) {
+            if(state.to_rate < 0) {
+                state.to_rate = m_evaluator->transition_rate(state);
+            }
+            return state.to_rate;
+        }
+};
+
+/**
+ * Read state transition probabilities rates from State objects if defined, 
+ * otherwise delegate evaluation to wrapped evaluator class
+*/
+template<typename State, typename transition_probability_evaluator>
+class state_cache_transition_probability_evaluator {
+
+    private:
+
+        transition_probability_evaluator* m_evaluator;
+
+    public:
+
+        state_cache_transition_probability_evaluator(
+            transition_probability_evaluator & evaluator
+        ) : m_evaluator(&evaluator) { }
+
+        const Eigen::VectorXd & probabilities(State & state) {
+            if(state.to_probabilities.size() == 0) {
+                state.to_probabilities = m_evaluator->probabilities(state);
+            }
+            return state.to_probabilities;
+        }
+};
+
 #endif

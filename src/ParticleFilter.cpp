@@ -28,6 +28,13 @@ double Test__Particle_Filter_Likelihood (
 
 ) {
 
+    // reset cached state values
+    auto end = statespace->states.end();
+    for(auto state = statespace->states.begin(); state != end; ++state) {
+        state->second.to_rate = -1;
+        state->second.to_probabilities.resize(0);
+    }
+
     //
     // configurations
     //
@@ -38,10 +45,15 @@ double Test__Particle_Filter_Likelihood (
     typedef location_based_movement<StateType, Eigen::VectorXd> 
         base_transition_rate;
     typedef uniformized_rate_evaluator<StateType, base_transition_rate> 
+        uniformized_transition_rate;
+    typedef state_cache_rate_evaluator<StateType,  uniformized_transition_rate> 
         particle_transition_rate;
 
     typedef directional_transition_probabilities<
         StateType, CardinalDirectionOrientations
+    > directional_probabilities;
+    typedef state_cache_transition_probability_evaluator<
+        StateType, directional_probabilities
     > particle_transition_probability;
 
     typedef Particle<
@@ -71,15 +83,17 @@ double Test__Particle_Filter_Likelihood (
 
     // construct transition rate evaluator
     base_transition_rate location_based_rate(beta);
-    particle_transition_rate uniformized_transition_rate(
+    uniformized_transition_rate uniformized_rate(
         &location_based_rate, delta
     );
+    particle_transition_rate transition_rate(uniformized_rate);
 
     // construct transition probability evaluator
-    particle_transition_probability transition_prob(directional_persistence);
+    directional_probabilities directional_probs(directional_persistence);
+    particle_transition_probability transition_prob(directional_probs);
 
     // build a particle at the state
-    ParticleType particle(uniformized_transition_rate, transition_prob);
+    ParticleType particle(transition_rate, transition_prob);
     particle.state = &state;
 
     // TODO: better initialization for particles

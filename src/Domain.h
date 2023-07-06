@@ -71,6 +71,12 @@ struct State {
     // states from which transitions originate, e.g., from the north
     std::set<SelfType*> from;
 
+    // continuous-time transition rate away from state
+    double to_rate = -1;
+
+    // probability that neighbors will be visited during a transition
+    Eigen::VectorXd to_probabilities;
+
     friend bool operator<(const SelfType & lhs, const SelfType & rhs) {
         return lhs.properties < rhs.properties;
     }
