@@ -40,12 +40,12 @@ struct Particle {
             } else {
                 
                 // get transition probabilities
-                auto probs = m_probability_evaluator->probabilities(*state);
+                double * mass = 
+                    m_probability_evaluator->probabilities(*state).data();
                 
                 // transition to random neighbor
                 double p = R::runif(0, 1);
                 double cumulative_mass = 0;
-                double * mass = probs.data();
                 for(auto destination : state->to) {
                     // aggregate transition mass from neighbor
                     cumulative_mass += *(mass++);

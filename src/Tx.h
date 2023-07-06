@@ -37,11 +37,11 @@ class directional_transition_probabilities {
          *   persistence and its neighbors
          * 
         */
-        Eigen::VectorXd probabilities(const State & state) {
+        const Eigen::VectorXd & probabilities(State & state) {
 
             // initialize output
-            Eigen::VectorXd p(state.to.size());
-            double* pIt = p.data();
+            state.to_probabilities.resize(state.to.size());
+            double* pIt = state.to_probabilities.data();
 
             // aggregate probability tx. mass for states that can be reached
             auto stateIt = state.to.begin();
@@ -57,7 +57,9 @@ class directional_transition_probabilities {
             }
 
             // standardize transition distribution
-            return p / p.sum();
+            state.to_probabilities /= state.to_probabilities.sum();
+
+            return state.to_probabilities;
         }
 
 };
