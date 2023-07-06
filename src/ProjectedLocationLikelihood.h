@@ -25,21 +25,21 @@ struct ProjectedLocationLikelihood {
 
             // parameterize bivariate normal distribution
 
-            double Mtsq_half = std::pow(semi_major, 2) / 2;
-            double mtsq_half = std::pow(semi_minor, 2) / 2;
+            double Mtsq_half = semi_major * semi_major / 2;
+            double mtsq_half = semi_minor * semi_minor / 2;
 
             double c = orientation / 180 * M_PI;
             double cos_c = std::cos(c);
-            double cos2_c = std::pow(cos_c, 2);
+            double cos2_c = cos_c * cos_c;
             double sin_c = std::sin(c);
-            double sin2_c = std::pow(sin_c, 2);
+            double sin2_c = sin_c * sin_c;
 
             sd_easting = std::sqrt(Mtsq_half * sin2_c + mtsq_half * cos2_c);
             sd_northing = std::sqrt(Mtsq_half * cos2_c + mtsq_half * sin2_c);
             rho = (Mtsq_half - mtsq_half) * cos_c * sin_c / sd_easting / 
                 sd_northing;
 
-            rhosq_c = 1 - std::pow(rho, 2);
+            rhosq_c = 1 - rho * rho;
 
             // log-normalizing constant
             lcst = - std::log(2 * M_PI * sd_easting * sd_northing)
@@ -65,7 +65,7 @@ struct ProjectedLocationLikelihood {
             }
 
             // quadratic form
-            double q = std::pow(zx, 2) - 2 * rho * zx * zy + std::pow(zy, 2);
+            double q = zx * zx - 2 * rho * zx * zy + zy * zy;
 
             return - q / 2 / rhosq_c + lcst;
         }
