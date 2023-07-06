@@ -40,7 +40,7 @@ struct Particle {
             } else {
                 
                 // get transition probabilities
-                double * mass = 
+                const double * mass = 
                     m_probability_evaluator->probabilities(*state).data();
                 
                 // transition to random neighbor
