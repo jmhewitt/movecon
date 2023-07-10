@@ -8,7 +8,7 @@ Maintainer: Joshua Hewitt <joshua.hewitt2@usda.gov>
 Description: Constrained animal movement modeling.
 License: CC0
 Suggests: testthat, stars, microbenchmark
-LinkingTo: Rcpp (>= 1.0.10), RcppEigen (>= 0.3.3.9.3)
+LinkingTo: Rcpp (>= 1.0.10), RcppEigen (>= 0.3.3.9.3), BH (>= 1.81.0-1)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
