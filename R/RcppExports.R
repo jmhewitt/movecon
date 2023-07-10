@@ -21,6 +21,10 @@ Test__Map_Location <- function(statespace, easting, northing) {
     .Call(`_movecon_Test__Map_Location`, statespace, easting, northing)
 }
 
+Test__States_At_Location <- function(statespace, easting, northing) {
+    .Call(`_movecon_Test__States_At_Location`, statespace, easting, northing)
+}
+
 Test__Particle_Steps <- function(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, nsteps) {
     .Call(`_movecon_Test__Particle_Steps`, statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, nsteps)
 }

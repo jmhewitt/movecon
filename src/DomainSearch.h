@@ -28,11 +28,11 @@ class StatespaceSearch {
         typedef std::pair<point, Location*> rtree_value;
         bgi::rtree<rtree_value, bgi::rstar<16>> domain_location_tree;
 
+    public:
+
         // reverse-lookup to index into states by their location
         typedef typename Statespace::StateType StateType;
         std::map<Location*, std::set<StateType*>> states_by_location;  
-
-    public:
 
         StatespaceSearch(Statespace & statespace) {
             // populate R-tree and reverse lookup structures with domain info.

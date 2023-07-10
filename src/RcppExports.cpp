@@ -78,6 +78,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Test__States_At_Location
+Rcpp::List Test__States_At_Location(Rcpp::XPtr<RookDirectionalStatespace> statespace, double easting, double northing);
+RcppExport SEXP _movecon_Test__States_At_Location(SEXP statespaceSEXP, SEXP eastingSEXP, SEXP northingSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< double >::type easting(eastingSEXP);
+    Rcpp::traits::input_parameter< double >::type northing(northingSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__States_At_Location(statespace, easting, northing));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Test__Particle_Steps
 Rcpp::List Test__Particle_Steps(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, Eigen::VectorXd beta, double delta, std::size_t nsteps);
 RcppExport SEXP _movecon_Test__Particle_Steps(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP, SEXP nstepsSEXP) {
@@ -178,6 +191,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
     {"_movecon_Test__Map_Location", (DL_FUNC) &_movecon_Test__Map_Location, 3},
+    {"_movecon_Test__States_At_Location", (DL_FUNC) &_movecon_Test__States_At_Location, 3},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 13},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},

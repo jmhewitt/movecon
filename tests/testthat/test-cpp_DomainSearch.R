@@ -51,10 +51,28 @@ res = Test__Map_Location(
   northing = northings[test_ind['northing_ind']]
 )
 
+# extract states associated with the same mapped location
+states = Test__States_At_Location(
+  statespace = statespace_constrained, 
+  easting = eastings[test_ind['easting_ind']],
+  northing = northings[test_ind['northing_ind']]
+)
+
 # verify we recover the valid location
 expect_equal(
   c(eastings[test_ind['easting_ind']], northings[test_ind['northing_ind']]),
   as.numeric(res[c('easting', 'northing')])
+)
+
+# verify the states are all associated with the location
+for(ind in seq_along(states)) {
+  expect_identical(states[[ind]]$location, res)
+}
+
+# verify we get all possible states for this location
+expect_identical(
+  sapply(states, function(s) s$last_movement_direction),
+  c('north', 'south', 'east', 'west')
 )
 
 #
