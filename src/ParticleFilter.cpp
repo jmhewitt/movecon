@@ -12,7 +12,7 @@
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
-double Test__Particle_Filter_Likelihood (
+Rcpp::List Test__Particle_Filter_Likelihood (
 
     std::vector<double> eastings, std::vector<double> northings, 
     std::vector<double> semi_majors, std::vector<double> semi_minors,
@@ -116,14 +116,57 @@ double Test__Particle_Filter_Likelihood (
     );
 
     //
-    // build and run particle filter
+    // build particle filter
     //
 
-    BootstrapParticleFilter<ParticleType, ProposalSeqType, LikelihoodSeqType> 
+    BootstrapParticleFilter<
+        ParticleType, 
+        ProposalSeqType, 
+        LikelihoodSeqType,
+        FilterObserver<ParticleType>
+    > 
     pf(particles);
 
     pf.proposal_distributions = &proposal_seq;
     pf.likelihoods = &likelihood_seq;
 
-    return pf.marginal_ll();
+    // raw storage for filtering distributions
+    FilterObserver<ParticleType> filtering_distributions;
+
+    // run particle filter
+    double ll = pf.marginal_ll(filtering_distributions);
+
+    //
+    // export filtering distributions as an array
+    //
+
+    Rcpp::NumericVector filtering_locations(
+        Rcpp::Dimension(
+            2, // coordinates
+            particles.size(), // particles
+            filtering_distributions.particle_distributions.size() // dist'ns.
+        )
+    );
+
+    // export filtering distributions as coordinates
+    double * filtering_loc = filtering_locations.begin();
+    auto distribution = filtering_distributions.particle_distributions.begin();
+    auto dist_end = filtering_distributions.particle_distributions.end();
+    for(; distribution != dist_end; ++distribution) {
+        // loop over particles within each distribution
+        auto particle = distribution->begin();
+        auto particle_end = distribution->end();
+        for(; particle != particle_end; ++particle) {
+            // transfer coordinates
+            *(filtering_loc++) = particle->state->properties.location->easting;
+            *(filtering_loc++) = particle->state->properties.location->northing;
+        } // particle
+    } // distribution
+
+
+    // package results
+    return Rcpp::List::create(
+        Rcpp::Named("ll") = ll,
+        Rcpp::Named("filtering_distributions") = filtering_locations
+    );
 }

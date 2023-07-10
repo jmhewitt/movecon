@@ -84,7 +84,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // Test__Particle_Filter_Likelihood
-double Test__Particle_Filter_Likelihood(std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, std::size_t nparticles, double directional_persistence, Eigen::VectorXd beta, double delta);
+Rcpp::List Test__Particle_Filter_Likelihood(std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, std::size_t nparticles, double directional_persistence, Eigen::VectorXd beta, double delta);
 RcppExport SEXP _movecon_Test__Particle_Filter_Likelihood(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP nparticlesSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

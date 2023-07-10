@@ -120,7 +120,7 @@ plot(directional_persistence_seq, ll_seq_exact)
 tick = Sys.time()
 ll_seq = sapply(directional_persistence_seq, function(directional_persistence) {
   # approximate likelihood for movement
-  Test__Particle_Filter_Likelihood(
+  list(Test__Particle_Filter_Likelihood(
     eastings = sapply(path, function(x) x$location$easting), 
     northings = sapply(path, function(x) x$location$northing), 
     semi_majors = rep(.1, length(path)),  
@@ -134,11 +134,14 @@ ll_seq = sapply(directional_persistence_seq, function(directional_persistence) {
     directional_persistence = directional_persistence, 
     beta = rep(0, nrow(covariates)), 
     delta = .9
-  )
+  ))
 })
 tock = Sys.time()
 
 tock - tick
+# Time difference of 1.564818 mins for 10 evaluations
+# Time difference of 16.9716 secs
+
 
 plot(directional_persistence_seq, ll_seq)
 

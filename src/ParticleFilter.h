@@ -5,10 +5,33 @@
 
 #include "log_add.h"
 
+/**
+ * The BootstrapParticleFilter uses an observer concept to export filtering 
+ * distributions and incremental likelihood contributions.  The NullObsrever 
+ * fulfills the observer requirement for BootstrapParticleFilter objects when 
+ * the filtering distributions do not need to be exported.
+*/
+template<typename Particle>
+struct NullObserver {
+    void operator()(const std::vector<Particle> & particles, double ll) { }
+};
+
+/**
+ * Store filtering distributions in an array
+*/
+template<typename Particle> 
+struct FilterObserver {
+    std::vector<std::vector<Particle>> particle_distributions;
+    void operator()(const std::vector<Particle> & particles, double ll) { 
+        particle_distributions.emplace_back(particles);
+    }
+};
+
 template<
     typename Particle, 
     typename ProposalDistributionSequence, 
-    typename LikelihoodSequence
+    typename LikelihoodSequence,
+    typename Observer = NullObserver<Particle>
 > 
 class BootstrapParticleFilter {
 
@@ -28,11 +51,20 @@ class BootstrapParticleFilter {
             particles_init(particles) { }
 
         /**
+         *  Particle filter approximation to marginal log-likelihood using 
+         *  a new, default observer
+        */
+        double marginal_ll() {
+            Observer o;
+            return marginal_ll(o);
+        }
+
+        /**
          * Particle filter approximation to marginal log-likelihood, implemented
          * via Algorithm 1 (Bootstrap filter) of Michaud et. al. (2021, doi:
          * 10.18637/jss.v100.i03)
         */
-        double marginal_ll() {
+        double marginal_ll(Observer & observer) {
 
             // initialize log-likelihood
             double ll = 0;
@@ -111,10 +143,14 @@ class BootstrapParticleFilter {
                 }
 
                 // aggregate likelihood mass (line 18)
-                ll += log_mass - log_M;
+                double ll_t = log_mass - log_M;
+                ll += ll_t;
 
                 // update particles
                 std::swap(active_particles, resampled_particles);
+
+                // provide opportunity to export filtering distributions, etc.
+                observer(*active_particles, ll_t);
 
                 // increment likelihood
                 ++likelihood;
