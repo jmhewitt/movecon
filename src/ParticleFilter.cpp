@@ -39,8 +39,10 @@ Rcpp::List Test__Particle_Filter_Likelihood (
     // configurations
     //
 
-    typedef RookDirectionalStatespace::StateKey StateKey;
-    typedef RookDirectionalStatespace::StateType StateType;
+    typedef RookDirectionalStatespace StatespaceType;
+
+    typedef StatespaceType::StateKey StateKey;
+    typedef StatespaceType::StateType StateType;
 
     typedef location_based_movement<StateType, Eigen::VectorXd> 
         base_transition_rate;

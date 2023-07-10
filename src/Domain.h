@@ -112,8 +112,8 @@ struct RookDirectionalStatespace {
      * 
      * @param eastings vector of easting coordinates in monotonic order, either
      *   increasing or decreasing
-     * @param northings vector of northing coordinates in monotonic order, either 
-     *   increasing or decreasing
+     * @param northings vector of northing coordinates in monotonic order, 
+     *   either increasing or decreasing
      * @param covariates matrix in column-major storage format in which each 
      *  column defines the covariates for a spatial location. A nested loop 
      *  of the northing and easting vectors forms the spatial ordering of the 
@@ -135,5 +135,6 @@ struct RookDirectionalStatespace {
 };
 
 Rcpp::List format_state(const RookDirectionalStatespace::StateType & state);
+Rcpp::List format_location(const Location & location);
 
 #endif //MOVECON_DOMAIN_H
