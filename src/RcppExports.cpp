@@ -76,29 +76,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Test__Map_Location
-Rcpp::List Test__Map_Location(Rcpp::XPtr<RookDirectionalStatespaceSearch> search, double easting, double northing);
-RcppExport SEXP _movecon_Test__Map_Location(SEXP searchSEXP, SEXP eastingSEXP, SEXP northingSEXP) {
+// nearest_location_in_domain
+Rcpp::List nearest_location_in_domain(Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, double easting, double northing);
+RcppExport SEXP _movecon_nearest_location_in_domain(SEXP statespace_searchSEXP, SEXP eastingSEXP, SEXP northingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespaceSearch> >::type search(searchSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespaceSearch> >::type statespace_search(statespace_searchSEXP);
     Rcpp::traits::input_parameter< double >::type easting(eastingSEXP);
     Rcpp::traits::input_parameter< double >::type northing(northingSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test__Map_Location(search, easting, northing));
+    rcpp_result_gen = Rcpp::wrap(nearest_location_in_domain(statespace_search, easting, northing));
     return rcpp_result_gen;
 END_RCPP
 }
-// Test__States_At_Location
-Rcpp::List Test__States_At_Location(Rcpp::XPtr<RookDirectionalStatespaceSearch> search, double easting, double northing);
-RcppExport SEXP _movecon_Test__States_At_Location(SEXP searchSEXP, SEXP eastingSEXP, SEXP northingSEXP) {
+// states_at_nearest_location_in_domain
+Rcpp::List states_at_nearest_location_in_domain(Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, double easting, double northing);
+RcppExport SEXP _movecon_states_at_nearest_location_in_domain(SEXP statespace_searchSEXP, SEXP eastingSEXP, SEXP northingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespaceSearch> >::type search(searchSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespaceSearch> >::type statespace_search(statespace_searchSEXP);
     Rcpp::traits::input_parameter< double >::type easting(eastingSEXP);
     Rcpp::traits::input_parameter< double >::type northing(northingSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test__States_At_Location(search, easting, northing));
+    rcpp_result_gen = Rcpp::wrap(states_at_nearest_location_in_domain(statespace_search, easting, northing));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -202,8 +202,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
     {"_movecon_extract_statespace_state", (DL_FUNC) &_movecon_extract_statespace_state, 4},
     {"_movecon_build_statespace_search", (DL_FUNC) &_movecon_build_statespace_search, 1},
-    {"_movecon_Test__Map_Location", (DL_FUNC) &_movecon_Test__Map_Location, 3},
-    {"_movecon_Test__States_At_Location", (DL_FUNC) &_movecon_Test__States_At_Location, 3},
+    {"_movecon_nearest_location_in_domain", (DL_FUNC) &_movecon_nearest_location_in_domain, 3},
+    {"_movecon_states_at_nearest_location_in_domain", (DL_FUNC) &_movecon_states_at_nearest_location_in_domain, 3},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 13},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},

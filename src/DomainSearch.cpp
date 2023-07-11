@@ -10,25 +10,26 @@ Rcpp::XPtr<RookDirectionalStatespaceSearch> build_statespace_search(
 }
 
 // [[Rcpp::export]]
-Rcpp::List Test__Map_Location(
-    Rcpp::XPtr<RookDirectionalStatespaceSearch> search, 
+Rcpp::List nearest_location_in_domain(
+    Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, 
     double easting,
     double northing
 ) {
-    return format_location(*search->map_location(easting, northing));
+    return format_location(*statespace_search->map_location(easting, northing));
 }
 
 // [[Rcpp::export]]
-Rcpp::List Test__States_At_Location(
-    Rcpp::XPtr<RookDirectionalStatespaceSearch> search, 
+Rcpp::List states_at_nearest_location_in_domain(
+    Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, 
     double easting,
     double northing
 ) {
 
     typedef RookDirectionalStatespace::StateType StateType;
 
-    Location * location = search->map_location(easting, northing);
-    std::set<StateType*> states = search->states_by_location[location];
+    Location * location = statespace_search->map_location(easting, northing);
+    std::set<StateType*> states = 
+        statespace_search->states_by_location[location];
 
     Rcpp::List res;
 

@@ -48,15 +48,15 @@ test_ind = c(
 )
 
 # map coordinates to grid
-res = Test__Map_Location(
-  search = search,
+res = nearest_location_in_domain(
+  statespace_search = search,
   easting = eastings[test_ind['easting_ind']],
   northing = northings[test_ind['northing_ind']]
 )
 
 # extract states associated with the same mapped location
-states = Test__States_At_Location(
-  search = search,
+states = states_at_nearest_location_in_domain(
+  statespace_search = search,
   easting = eastings[test_ind['easting_ind']],
   northing = northings[test_ind['northing_ind']]
 )
@@ -89,8 +89,8 @@ test_ind = c(
 )
 
 # map perturbed coordinates to grid
-res = Test__Map_Location(
-  search = search,
+res = nearest_location_in_domain(
+  statespace_search = search,
   easting = eastings[test_ind['easting_ind']] + .1,
   northing = northings[test_ind['northing_ind']] - .1
 )
@@ -112,8 +112,8 @@ test_ind = c(
 )
 
 # map to closest good coordinates in domain
-res = Test__Map_Location(
-  search = search,
+res = nearest_location_in_domain(
+  statespace_search = search,
   easting = eastings[test_ind['easting_ind']],
   northing = northings[test_ind['northing_ind']]
 )
