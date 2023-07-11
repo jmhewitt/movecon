@@ -92,6 +92,6 @@ Rcpp::List sample_gaussian_states(
     Rcpp::XPtr<std::vector<StateType*>> state_ptr(states, true);
     return Rcpp::List::create(
         Rcpp::Named("states") = states_formatted,
-        Rcpp::Named("states_native") = state_ptr
+        Rcpp::Named("states_cpp") = state_ptr
     );
 }
