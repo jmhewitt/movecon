@@ -143,6 +143,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// sample_gaussian_states
+Rcpp::List sample_gaussian_states(Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, double easting, double northing, double semi_major, double semi_minor, double orientation, std::size_t n);
+RcppExport SEXP _movecon_sample_gaussian_states(SEXP statespace_searchSEXP, SEXP eastingSEXP, SEXP northingSEXP, SEXP semi_majorSEXP, SEXP semi_minorSEXP, SEXP orientationSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespaceSearch> >::type statespace_search(statespace_searchSEXP);
+    Rcpp::traits::input_parameter< double >::type easting(eastingSEXP);
+    Rcpp::traits::input_parameter< double >::type northing(northingSEXP);
+    Rcpp::traits::input_parameter< double >::type semi_major(semi_majorSEXP);
+    Rcpp::traits::input_parameter< double >::type semi_minor(semi_minorSEXP);
+    Rcpp::traits::input_parameter< double >::type orientation(orientationSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_gaussian_states(statespace_search, easting, northing, semi_major, semi_minor, orientation, n));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Test__Directional_Transition_Probabilities
 Eigen::VectorXd Test__Directional_Transition_Probabilities(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence);
 RcppExport SEXP _movecon_Test__Directional_Transition_Probabilities(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP) {
@@ -206,6 +223,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_states_at_nearest_location_in_domain", (DL_FUNC) &_movecon_states_at_nearest_location_in_domain, 3},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 13},
+    {"_movecon_sample_gaussian_states", (DL_FUNC) &_movecon_sample_gaussian_states, 7},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
     {"_movecon_Test__Location_Based_Movement_Transition_Rate", (DL_FUNC) &_movecon_Test__Location_Based_Movement_Transition_Rate, 5},
     {"_movecon_log_sum", (DL_FUNC) &_movecon_log_sum, 1},

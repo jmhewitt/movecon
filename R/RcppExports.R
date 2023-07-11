@@ -37,6 +37,10 @@ Test__Particle_Filter_Likelihood <- function(eastings, northings, semi_majors, s
     .Call(`_movecon_Test__Particle_Filter_Likelihood`, eastings, northings, semi_majors, semi_minors, orientations, statespace, last_movement_direction, easting_ind, northing_ind, nparticles, directional_persistence, beta, delta)
 }
 
+sample_gaussian_states <- function(statespace_search, easting, northing, semi_major, semi_minor, orientation, n) {
+    .Call(`_movecon_sample_gaussian_states`, statespace_search, easting, northing, semi_major, semi_minor, orientation, n)
+}
+
 Test__Directional_Transition_Probabilities <- function(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence) {
     .Call(`_movecon_Test__Directional_Transition_Probabilities`, statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence)
 }

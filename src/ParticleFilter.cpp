@@ -67,7 +67,7 @@ Rcpp::List Test__Particle_Filter_Likelihood (
     typedef std::vector<NStepProposal<ParticleType>> ProposalSeqType;
 
     typedef std::vector<
-        ProjectedLocationLikelihood<ParticleType>
+        ProjectedLocationLikelihood
     > LikelihoodSeqType;
 
     //
@@ -105,7 +105,7 @@ Rcpp::List Test__Particle_Filter_Likelihood (
     // build likelihoods
     //
 
-    LikelihoodSeqType likelihood_seq = LocationDistributionFamily<ParticleType>(
+    LikelihoodSeqType likelihood_seq = LocationDistributionFamily(
         eastings, northings, semi_majors, semi_minors, orientations
     );
 
