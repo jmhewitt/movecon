@@ -7,3 +7,4 @@
  *   https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-attributes.pdf
 */ 
 #include "Domain.h"
+#include "DomainSearch.h"

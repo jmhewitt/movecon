@@ -17,12 +17,16 @@ extract_statespace_state <- function(statespace, last_movement_direction, eastin
     .Call(`_movecon_extract_statespace_state`, statespace, last_movement_direction, easting_ind, northing_ind)
 }
 
-Test__Map_Location <- function(statespace, easting, northing) {
-    .Call(`_movecon_Test__Map_Location`, statespace, easting, northing)
+build_statespace_search <- function(statespace) {
+    .Call(`_movecon_build_statespace_search`, statespace)
 }
 
-Test__States_At_Location <- function(statespace, easting, northing) {
-    .Call(`_movecon_Test__States_At_Location`, statespace, easting, northing)
+Test__Map_Location <- function(search, easting, northing) {
+    .Call(`_movecon_Test__Map_Location`, search, easting, northing)
+}
+
+Test__States_At_Location <- function(search, easting, northing) {
+    .Call(`_movecon_Test__States_At_Location`, search, easting, northing)
 }
 
 Test__Particle_Steps <- function(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, nsteps) {

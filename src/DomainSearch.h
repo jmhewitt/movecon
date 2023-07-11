@@ -62,4 +62,7 @@ class StatespaceSearch {
 
 };
 
+typedef StatespaceSearch<RookDirectionalStatespace> 
+    RookDirectionalStatespaceSearch;
+
 #endif
