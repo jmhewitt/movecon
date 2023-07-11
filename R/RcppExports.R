@@ -33,8 +33,8 @@ Test__Particle_Steps <- function(statespace, last_movement_direction, easting_in
     .Call(`_movecon_Test__Particle_Steps`, statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, nsteps)
 }
 
-Test__Particle_Filter_Likelihood <- function(eastings, northings, semi_majors, semi_minors, orientations, statespace, last_movement_direction, easting_ind, northing_ind, nparticles, directional_persistence, beta, delta) {
-    .Call(`_movecon_Test__Particle_Filter_Likelihood`, eastings, northings, semi_majors, semi_minors, orientations, statespace, last_movement_direction, easting_ind, northing_ind, nparticles, directional_persistence, beta, delta)
+Test__Particle_Filter_Likelihood <- function(eastings, northings, semi_majors, semi_minors, orientations, statespace, initial_latent_state_sample, directional_persistence, beta, delta) {
+    .Call(`_movecon_Test__Particle_Filter_Likelihood`, eastings, northings, semi_majors, semi_minors, orientations, statespace, initial_latent_state_sample, directional_persistence, beta, delta)
 }
 
 sample_gaussian_states <- function(statespace_search, easting, northing, semi_major, semi_minor, orientation, n) {

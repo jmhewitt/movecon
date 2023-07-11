@@ -34,6 +34,9 @@ statespace_constrained = build_statespace(
 valid_locs = which(dat$L7_ETMs.tif[,,1] >= band1_avg, arr.ind = TRUE)
 invalid_locs = which(dat$L7_ETMs.tif[,,1] < band1_avg, arr.ind = TRUE)
 
+# build statespace search util
+search = build_statespace_search(statespace = statespace_constrained)
+
 #
 # test: movement stays within a constrained space
 #
@@ -62,6 +65,15 @@ path = Test__Particle_Steps(
   delta = .9, 
   nsteps = 1000
 )
+
+# # visualize movement
+# pts = do.call(rbind, lapply(path, function(s) {
+#   unlist(s$location[c('easting', 'northing')])
+# }))
+# dat2 = dat
+# dat2$L7_ETMs.tif[,,1] = dat$L7_ETMs.tif[,,1] >= band1_avg
+# image(dat2)
+# lines(pts, col = 'green')
 
 # exact likelihood for movement
 ll_exact = function(directional_persistence) {
@@ -106,16 +118,23 @@ ll_exact = function(directional_persistence) {
   }))
   })
 }
-  
-  
-
-
 
 directional_persistence_seq = seq(from = -1, to = 1, length.out = 10)
 
 ll_seq_exact = ll_exact(directional_persistence_seq)
 
 plot(directional_persistence_seq, ll_seq_exact)
+
+# initial latent state distribution
+states = sample_gaussian_states(
+  statespace_search = search, 
+  easting = path[[1]]$location$easting, 
+  northing = path[[1]]$location$northing, 
+  semi_major = .1, 
+  semi_minor = .1, 
+  orientation = 0, 
+  n = 1e4
+)
 
 tick = Sys.time()
 ll_seq = sapply(directional_persistence_seq, function(directional_persistence) {
@@ -127,10 +146,7 @@ ll_seq = sapply(directional_persistence_seq, function(directional_persistence) {
     semi_minors = rep(.1, length(path)), 
     orientations = rep(0, length(path)), 
     statespace = statespace_constrained, 
-    last_movement_direction = 'west', 
-    easting_ind = boundary_coord_inds['easting_ind'] - 1, 
-    northing_ind = boundary_coord_inds['northing_ind'] - 1, 
-    nparticles = 1e4, 
+    initial_latent_state_sample = states$states_cpp,
     directional_persistence = directional_persistence, 
     beta = rep(0, nrow(covariates)), 
     delta = .9
@@ -142,14 +158,15 @@ tock - tick
 # Time difference of 1.564818 mins for 10 evaluations
 # Time difference of 16.9716 secs
 
+ll_seq_val = sapply(ll_seq, function(x) x$ll)
 
-plot(directional_persistence_seq, ll_seq)
+plot(directional_persistence_seq, ll_seq_val)
 
 
 
-lp_seq = exp(ll_seq - log_sum(ll_seq))
+lp_seq = exp(ll_seq - log_sum(ll_seq_val))
 lp_seq = lp_seq / sum(lp_seq)
 
-plot(directional_persistence_seq, (lp_seq))
+# plot(directional_persistence_seq, (lp_seq))
 
 sum(directional_persistence_seq * lp_seq)

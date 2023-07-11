@@ -13,19 +13,17 @@
 
 // [[Rcpp::export]]
 Rcpp::List Test__Particle_Filter_Likelihood (
-
+    /* likelihood components */
     std::vector<double> eastings, std::vector<double> northings, 
     std::vector<double> semi_majors, std::vector<double> semi_minors,
     std::vector<double> orientations,
-
+    /* filter components */
     Rcpp::XPtr<RookDirectionalStatespace> statespace,
-    std::string last_movement_direction,
-    std::size_t easting_ind, 
-    std::size_t northing_ind,
-    std::size_t nparticles,
-
+    Rcpp::XPtr<
+        std::vector<RookDirectionalStatespace::StateType*>
+    > initial_latent_state_sample,
+    /* model parameters */
     double directional_persistence, Eigen::VectorXd beta, double delta
-
 ) {
 
     // reset cached state values
@@ -66,22 +64,11 @@ Rcpp::List Test__Particle_Filter_Likelihood (
 
     typedef std::vector<NStepProposal<ParticleType>> ProposalSeqType;
 
-    typedef std::vector<
-        ProjectedLocationLikelihood
-    > LikelihoodSeqType;
+    typedef std::vector<ProjectedLocationLikelihood> LikelihoodSeqType;
 
     //
     // build particles
     //
-
-    // get starting state
-    StateType & state = statespace->states.at(
-        StateKey(
-            stringToDirection(last_movement_direction), 
-            easting_ind, 
-            northing_ind
-        )
-    );
 
     // construct transition rate evaluator
     base_transition_rate location_based_rate(beta);
@@ -94,12 +81,18 @@ Rcpp::List Test__Particle_Filter_Likelihood (
     directional_probabilities directional_probs(directional_persistence);
     particle_transition_probability transition_prob(directional_probs);
 
-    // build a particle at the state
-    ParticleType particle(transition_rate, transition_prob);
-    particle.state = &state;
+    // initialize particle container
+    std::vector<ParticleType> particles;
+    particles.reserve(initial_latent_state_sample->size());
 
-    // TODO: better initialization for particles
-    std::vector<ParticleType> particles(nparticles, particle);
+    // build particles for the initial states
+    ParticleType particle(transition_rate, transition_prob);
+    auto state = initial_latent_state_sample->begin();
+    auto state_end = initial_latent_state_sample->end();
+    for(; state != state_end; ++state) {
+        particle.state = *state;
+        particles.push_back(particle);
+    }
 
     //
     // build likelihoods
