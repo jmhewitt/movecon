@@ -39,6 +39,12 @@ class BootstrapParticleFilter {
 
         std::vector<Particle> particles_init;
 
+        // convert a pointer to a reference if needed
+        template<typename T> 
+        T& asReference(T * x) { return  *x; }
+        template<typename T> 
+        T& asReference(T & x) { return  x; }
+
     public:
 
         ProposalDistributionSequence * proposal_distributions;
@@ -103,7 +109,8 @@ class BootstrapParticleFilter {
                     proposal_distn->propose(*particle);
                     // compute log-importance weight (line 8)
                     // Note: weight will always be uniform
-                    *(log_w++) = (*likelihood)(*particle) + log_uniform_weight;
+                    *(log_w++) = asReference(*likelihood).dparticle(*particle) + 
+                        log_uniform_weight;
                 }
 
                 // normalize resampling weights and resample (lines 11, 14, 15)
