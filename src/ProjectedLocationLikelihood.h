@@ -55,24 +55,23 @@ struct ProjectedLocationLikelihood {
         }
 
         /**
-         * Evaluate log-likelihood for a particle
+         * Evaluate log-likelihood for a state
         */
-        template<typename Particle>
-        double operator()(const Particle & particle) {
-
+       template<typename State>
+       double dstate(const State & state) {
             // compute projected distances; scale wrt. uncertainty
             double zx = (
-                particle.state->properties.location->easting - mu_easting
+                state.properties.location->easting - mu_easting
             ) / sd_easting;
             double zy = (
-                particle.state->properties.location->northing - mu_northing
+                state.properties.location->northing - mu_northing
             ) / sd_northing;
 
             // sign the distances
-            if(mu_easting < particle.state->properties.location->easting) {
+            if(mu_easting < state.properties.location->easting) {
                 zx *= -1;
             }
-            if(mu_northing < particle.state->properties.location->northing) {
+            if(mu_northing < state.properties.location->northing) {
                 zy *= -1;
             }
 
@@ -80,6 +79,14 @@ struct ProjectedLocationLikelihood {
             double q = zx * zx - 2 * rho * zx * zy + zy * zy;
 
             return - q / 2 / rhosq_c + lcst;
+       }
+
+        /**
+         * Evaluate log-likelihood for a particle
+        */
+        template<typename Particle>
+        double dparticle(const Particle & particle) {
+            return dstate(*particle.state);
         }
 
         /**
