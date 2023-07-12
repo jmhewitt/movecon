@@ -108,7 +108,7 @@ Rcpp::List Test__Particle_Filter_Likelihood(
     //
 
     ProposalSeqType proposal_seq = ConstantStepFamily<ParticleType>(
-        eastings.size(), 1
+        likelihood_seq.size(), 1
     );
 
     //
