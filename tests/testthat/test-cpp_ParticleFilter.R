@@ -164,7 +164,7 @@ plot(directional_persistence_seq, ll_seq_val)
 
 
 
-lp_seq = exp(ll_seq - log_sum(ll_seq_val))
+lp_seq = exp(ll_seq_val - log_sum(ll_seq_val))
 lp_seq = lp_seq / sum(lp_seq)
 
 # plot(directional_persistence_seq, (lp_seq))
