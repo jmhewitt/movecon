@@ -12,7 +12,7 @@
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
-Rcpp::List Test__Particle_Filter_Likelihood (
+Rcpp::List Test__Particle_Filter_Likelihood(
     /* likelihood components */
     std::vector<double> eastings, std::vector<double> northings, 
     std::vector<double> semi_majors, std::vector<double> semi_minors,
