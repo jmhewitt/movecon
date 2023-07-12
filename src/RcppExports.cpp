@@ -12,6 +12,23 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// Test__AppliedLikelihoodFamily
+double Test__AppliedLikelihoodFamily(std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, std::vector<std::size_t> t, Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > states);
+RcppExport SEXP _movecon_Test__AppliedLikelihoodFamily(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP tSEXP, SEXP statesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type eastings(eastingsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type northings(northingsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type semi_majors(semi_majorsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type semi_minors(semi_minorsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type orientations(orientationsSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::size_t> >::type t(tSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > >::type states(statesSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__AppliedLikelihoodFamily(eastings, northings, semi_majors, semi_minors, orientations, t, states));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Test__Directional_Covariate
 double Test__Directional_Covariate(std::string x, std::string y);
 RcppExport SEXP _movecon_Test__Directional_Covariate(SEXP xSEXP, SEXP ySEXP) {
@@ -211,6 +228,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_movecon_Test__AppliedLikelihoodFamily", (DL_FUNC) &_movecon_Test__AppliedLikelihoodFamily, 7},
     {"_movecon_Test__Directional_Covariate", (DL_FUNC) &_movecon_Test__Directional_Covariate, 2},
     {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 4},
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
