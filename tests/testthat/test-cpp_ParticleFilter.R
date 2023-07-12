@@ -136,15 +136,20 @@ states = sample_gaussian_states(
   n = 1e4
 )
 
+# observations to include in likelihood (i.e., to treat as not missing)
+sbst = sort(sample(x = length(path), size = 500))
+
 tick = Sys.time()
 ll_seq = sapply(directional_persistence_seq, function(directional_persistence) {
   # approximate likelihood for movement
   list(Test__Particle_Filter_Likelihood(
-    eastings = sapply(path, function(x) x$location$easting), 
-    northings = sapply(path, function(x) x$location$northing), 
-    semi_majors = rep(.1, length(path)),  
-    semi_minors = rep(.1, length(path)), 
-    orientations = rep(0, length(path)), 
+    eastings = sapply(path, function(x) x$location$easting)[sbst], 
+    northings = sapply(path, function(x) x$location$northing)[sbst], 
+    semi_majors = rep(.1, length(path))[sbst],  
+    semi_minors = rep(.1, length(path))[sbst], 
+    orientations = rep(0, length(path))[sbst], 
+    t = ((1:length(path)) - 1)[sbst],
+    nt = length(path),
     statespace = statespace_constrained, 
     initial_latent_state_sample = states$states_cpp,
     directional_persistence = directional_persistence, 

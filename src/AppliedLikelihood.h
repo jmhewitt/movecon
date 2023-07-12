@@ -82,29 +82,8 @@ struct AppliedLocationLikelihood : public AppliedLikelihood {
 std::vector<std::unique_ptr<AppliedLikelihood>> AppliedLikelihoodFamily(
     std::vector<double> eastings, std::vector<double> northings, 
     std::vector<double> semi_majors, std::vector<double> semi_minors,
-    std::vector<double> orientations
-) {
-    std::vector<std::unique_ptr<AppliedLikelihood>> family;
-    family.reserve(eastings.size());
-    
-    auto eastings_it = eastings.begin();
-    auto northings_it = northings.begin();
-    auto semi_majors_it = semi_majors.begin();
-    auto semi_minors_it = semi_minors.begin();
-    auto orientations_it = orientations.begin();
-
-    auto eastings_end = eastings.end();
-    for(; eastings_it != eastings_end; ++eastings_it) {
-        family.emplace_back(
-            new AppliedLocationLikelihood(
-                *eastings_it, *(northings_it++), *(semi_majors_it++), 
-                *(semi_minors_it++), *(orientations_it++)
-            )
-        );
-        family.emplace_back(new AppliedFlatLikelihood());
-    }
-
-    return family;
-}
+    std::vector<double> orientations, std::vector<std::size_t> t,
+    std::size_t nt
+);
 
 #endif

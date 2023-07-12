@@ -4,8 +4,7 @@
 #include "Domain.h"
 #include "Tx.h"
 #include "Directions.h"
-#include "log_add.h"
-#include "ProjectedLocationLikelihood.h"
+#include "AppliedLikelihood.h"
 
 #include <RcppEigen.h>
 
@@ -17,6 +16,8 @@ Rcpp::List Test__Particle_Filter_Likelihood(
     std::vector<double> eastings, std::vector<double> northings, 
     std::vector<double> semi_majors, std::vector<double> semi_minors,
     std::vector<double> orientations,
+    std::vector<std::size_t> t,
+    std::size_t nt,
     /* filter components */
     Rcpp::XPtr<RookDirectionalStatespace> statespace,
     Rcpp::XPtr<
@@ -64,7 +65,7 @@ Rcpp::List Test__Particle_Filter_Likelihood(
 
     typedef std::vector<NStepProposal<ParticleType>> ProposalSeqType;
 
-    typedef std::vector<ProjectedLocationLikelihood> LikelihoodSeqType;
+    typedef std::vector<std::unique_ptr<AppliedLikelihood>> LikelihoodSeqType;
 
     //
     // build particles
@@ -98,8 +99,8 @@ Rcpp::List Test__Particle_Filter_Likelihood(
     // build likelihoods
     //
 
-    LikelihoodSeqType likelihood_seq = LocationDistributionFamily(
-        eastings, northings, semi_majors, semi_minors, orientations
+    LikelihoodSeqType likelihood_seq = AppliedLikelihoodFamily(
+        eastings, northings, semi_majors, semi_minors, orientations, t, nt
     );
 
     //

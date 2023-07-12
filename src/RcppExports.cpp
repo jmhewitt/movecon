@@ -13,8 +13,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // Test__AppliedLikelihoodFamily
-double Test__AppliedLikelihoodFamily(std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, std::vector<std::size_t> t, Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > states);
-RcppExport SEXP _movecon_Test__AppliedLikelihoodFamily(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP tSEXP, SEXP statesSEXP) {
+double Test__AppliedLikelihoodFamily(std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, std::vector<std::size_t> t, std::size_t nt, Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > states);
+RcppExport SEXP _movecon_Test__AppliedLikelihoodFamily(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP tSEXP, SEXP ntSEXP, SEXP statesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -24,8 +24,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<double> >::type semi_minors(semi_minorsSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type orientations(orientationsSEXP);
     Rcpp::traits::input_parameter< std::vector<std::size_t> >::type t(tSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nt(ntSEXP);
     Rcpp::traits::input_parameter< Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > >::type states(statesSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test__AppliedLikelihoodFamily(eastings, northings, semi_majors, semi_minors, orientations, t, states));
+    rcpp_result_gen = Rcpp::wrap(Test__AppliedLikelihoodFamily(eastings, northings, semi_majors, semi_minors, orientations, t, nt, states));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -138,8 +139,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Test__Particle_Filter_Likelihood
-Rcpp::List Test__Particle_Filter_Likelihood(/* likelihood components */     std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, /* filter components */     Rcpp::XPtr<RookDirectionalStatespace> statespace, Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > initial_latent_state_sample, /* model parameters */     double directional_persistence, Eigen::VectorXd beta, double delta);
-RcppExport SEXP _movecon_Test__Particle_Filter_Likelihood(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP statespaceSEXP, SEXP initial_latent_state_sampleSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP) {
+Rcpp::List Test__Particle_Filter_Likelihood(/* likelihood components */     std::vector<double> eastings, std::vector<double> northings, std::vector<double> semi_majors, std::vector<double> semi_minors, std::vector<double> orientations, std::vector<std::size_t> t, std::size_t nt, /* filter components */     Rcpp::XPtr<RookDirectionalStatespace> statespace, Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > initial_latent_state_sample, /* model parameters */     double directional_persistence, Eigen::VectorXd beta, double delta);
+RcppExport SEXP _movecon_Test__Particle_Filter_Likelihood(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP semi_majorsSEXP, SEXP semi_minorsSEXP, SEXP orientationsSEXP, SEXP tSEXP, SEXP ntSEXP, SEXP statespaceSEXP, SEXP initial_latent_state_sampleSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -148,12 +149,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<double> >::type semi_majors(semi_majorsSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type semi_minors(semi_minorsSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type orientations(orientationsSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::size_t> >::type t(tSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nt(ntSEXP);
     Rcpp::traits::input_parameter< /* filter components */     Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
     Rcpp::traits::input_parameter< Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > >::type initial_latent_state_sample(initial_latent_state_sampleSEXP);
     Rcpp::traits::input_parameter< /* model parameters */     double >::type directional_persistence(directional_persistenceSEXP);
     Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test__Particle_Filter_Likelihood(eastings, northings, semi_majors, semi_minors, orientations, statespace, initial_latent_state_sample, directional_persistence, beta, delta));
+    rcpp_result_gen = Rcpp::wrap(Test__Particle_Filter_Likelihood(eastings, northings, semi_majors, semi_minors, orientations, t, nt, statespace, initial_latent_state_sample, directional_persistence, beta, delta));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -228,7 +231,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_movecon_Test__AppliedLikelihoodFamily", (DL_FUNC) &_movecon_Test__AppliedLikelihoodFamily, 7},
+    {"_movecon_Test__AppliedLikelihoodFamily", (DL_FUNC) &_movecon_Test__AppliedLikelihoodFamily, 8},
     {"_movecon_Test__Directional_Covariate", (DL_FUNC) &_movecon_Test__Directional_Covariate, 2},
     {"_movecon_build_statespace", (DL_FUNC) &_movecon_build_statespace, 4},
     {"_movecon_extract_statespace_location", (DL_FUNC) &_movecon_extract_statespace_location, 3},
@@ -237,7 +240,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_nearest_location_in_domain", (DL_FUNC) &_movecon_nearest_location_in_domain, 3},
     {"_movecon_states_at_nearest_location_in_domain", (DL_FUNC) &_movecon_states_at_nearest_location_in_domain, 3},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
-    {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 10},
+    {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 12},
     {"_movecon_sample_gaussian_states", (DL_FUNC) &_movecon_sample_gaussian_states, 7},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
     {"_movecon_Test__Location_Based_Movement_Transition_Rate", (DL_FUNC) &_movecon_Test__Location_Based_Movement_Transition_Rate, 5},

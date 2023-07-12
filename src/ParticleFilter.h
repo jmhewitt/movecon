@@ -41,6 +41,8 @@ class BootstrapParticleFilter {
 
         // convert a pointer to a reference if needed
         template<typename T> 
+        T& asReference(std::unique_ptr<T> & x) { return  *x; }
+        template<typename T> 
         T& asReference(T * x) { return  *x; }
         template<typename T> 
         T& asReference(T & x) { return  x; }
