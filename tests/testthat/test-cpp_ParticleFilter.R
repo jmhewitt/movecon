@@ -177,3 +177,4 @@ lp_seq = lp_seq / sum(lp_seq)
 # plot(directional_persistence_seq, (lp_seq))
 
 sum(directional_persistence_seq * lp_seq)
+plot(directional_persistence_seq, exp(lp_seq))
