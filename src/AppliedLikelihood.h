@@ -60,14 +60,30 @@ struct AppliedLocationLikelihood : public AppliedLikelihood {
 
         ProjectedLocationLikelihood likelihood_impl;
 
+        AppliedLocationLikelihood(ProjectedLocationLikelihood & likelihood) :
+            likelihood_impl(likelihood) { }
+
     public:
 
-        AppliedLocationLikelihood(
+        static AppliedLocationLikelihood from_ellipse(
             double easting, double northing, double semi_major, 
             double semi_minor, double orientation
-        ) : likelihood_impl(
-                easting, northing, semi_major, semi_minor, orientation
-            ) { }
+        ) {
+            ProjectedLocationLikelihood lik = ProjectedLocationLikelihood::from_ellipse(   
+                    easting, northing, semi_major, semi_minor, orientation
+                );
+            return AppliedLocationLikelihood(lik);
+        }
+
+        static AppliedLocationLikelihood from_hdop_uere(
+            double easting, double northing, double hdop, double uere
+        ) {
+            ProjectedLocationLikelihood lik = 
+            ProjectedLocationLikelihood::from_hdop_uere(   
+                    easting, northing, hdop, uere
+                );
+            return AppliedLocationLikelihood(lik);
+        }
 
         double dparticle(const ParticleType & particle) {
             return likelihood_impl.dparticle(particle);
@@ -83,6 +99,12 @@ std::vector<std::unique_ptr<AppliedLikelihood>> AppliedLikelihoodFamily(
     std::vector<double> eastings, std::vector<double> northings, 
     std::vector<double> semi_majors, std::vector<double> semi_minors,
     std::vector<double> orientations, std::vector<std::size_t> t,
+    std::size_t nt
+);
+
+std::vector<std::unique_ptr<AppliedLikelihood>> AppliedLikelihoodFamilyFromGPS(
+    std::vector<double> eastings, std::vector<double> northings, 
+    std::vector<double> hdops, double uere, std::vector<std::size_t> t,
     std::size_t nt
 );
 

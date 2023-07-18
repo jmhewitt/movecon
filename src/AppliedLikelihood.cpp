@@ -39,8 +39,42 @@ std::vector<std::unique_ptr<AppliedLikelihood>> AppliedLikelihoodFamily(
             ++t_it;
             family.emplace_back(
                 new AppliedLocationLikelihood(
-                    *(eastings_it++), *(northings_it++), *(semi_majors_it++), 
-                    *(semi_minors_it++), *(orientations_it++)
+                    AppliedLocationLikelihood::from_ellipse(
+                        *(eastings_it++), *(northings_it++), 
+                        *(semi_majors_it++), *(semi_minors_it++), 
+                        *(orientations_it++)
+                    )
+                )
+            );
+        } else {
+            family.emplace_back(new AppliedFlatLikelihood());
+        }
+    }
+
+    return family;
+}
+
+std::vector<std::unique_ptr<AppliedLikelihood>> AppliedLikelihoodFamilyFromGPS(
+    std::vector<double> eastings, std::vector<double> northings, 
+    std::vector<double> hdops, double uere, std::vector<std::size_t> t,
+    std::size_t nt
+) {
+    std::vector<std::unique_ptr<AppliedLikelihood>> family;
+    family.reserve(eastings.size());
+    
+    auto t_it = t.begin();
+    auto eastings_it = eastings.begin();
+    auto northings_it = northings.begin();
+    auto hdops_it = hdops.begin();
+
+    for(std::size_t ind = 0; ind < nt; ++ind) {
+        if(ind == *t_it) {
+            ++t_it;
+            family.emplace_back(
+                new AppliedLocationLikelihood(
+                    AppliedLocationLikelihood::from_hdop_uere(
+                        *(eastings_it++), *(northings_it++), *(hdops_it++), uere
+                    )
                 )
             );
         } else {

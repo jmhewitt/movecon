@@ -1,5 +1,4 @@
 #include "DomainSearch.h"
-#include "ProjectedLocationLikelihood.h"
 
 // [[Rcpp::export]]
 Rcpp::XPtr<RookDirectionalStatespaceSearch> build_statespace_search(

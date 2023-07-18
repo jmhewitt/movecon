@@ -2,7 +2,7 @@
 #include "DomainSearch.h"
 
 /**
- * Create a family of location observation distributions from input vectors
+ * Create a family of location observation distributions from ellipse vectors
 */
 std::vector<ProjectedLocationLikelihood> LocationDistributionFamily(
     std::vector<double> eastings, std::vector<double> northings, 
@@ -21,9 +21,35 @@ std::vector<ProjectedLocationLikelihood> LocationDistributionFamily(
     auto eastings_end = eastings.end();
     for(; eastings_it != eastings_end; ++eastings_it) {
         family.emplace_back(
-            ProjectedLocationLikelihood(
+            ProjectedLocationLikelihood::from_ellipse(
                 *eastings_it, *(northings_it++), *(semi_majors_it++), 
                 *(semi_minors_it++), *(orientations_it++)
+            )
+        );
+    }
+
+    return family;
+}
+
+/**
+ * Create a family of location observation distributions from GPS vectors
+*/
+std::vector<ProjectedLocationLikelihood> LocationDistributionFamilyFromGPS(
+    std::vector<double> eastings, std::vector<double> northings, 
+    std::vector<double> hdops, double uere
+) {
+    std::vector<ProjectedLocationLikelihood> family;
+    family.reserve(eastings.size());
+    
+    auto eastings_it = eastings.begin();
+    auto northings_it = northings.begin();
+    auto hdops_it = hdops.begin();
+
+    auto eastings_end = eastings.end();
+    for(; eastings_it != eastings_end; ++eastings_it) {
+        family.emplace_back(
+            ProjectedLocationLikelihood::from_hdop_uere(
+                *eastings_it, *(northings_it++), *(hdops_it++), uere
             )
         );
     }
@@ -50,9 +76,10 @@ Rcpp::List sample_gaussian_states(
     typedef RookDirectionalStatespace::StateType StateType;
 
     // initialize sampler
-    ProjectedLocationLikelihood sampler(
-        easting, northing, semi_major, semi_minor, orientation
-    );
+    ProjectedLocationLikelihood sampler = 
+        ProjectedLocationLikelihood::from_ellipse(
+            easting, northing, semi_major, semi_minor, orientation
+        );
 
     //
     // initialize output 
@@ -85,7 +112,7 @@ Rcpp::List sample_gaussian_states(
         StateType* r_state = *set_iter;
         // export sample
         states->push_back(r_state);
-        states_formatted.push_back(format_state(*r_state));
+        // states_formatted.push_back(format_state(*r_state));
     }
 
     // package results
