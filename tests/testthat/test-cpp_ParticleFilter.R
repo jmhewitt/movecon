@@ -137,7 +137,8 @@ states = sample_gaussian_states(
 )
 
 # observations to include in likelihood (i.e., to treat as not missing)
-sbst = sort(sample(x = length(path), size = 500))
+# sbst = sort(sample(x = length(path), size = 100))
+sbst = 1:length(path)
 
 tick = Sys.time()
 ll_seq = sapply(directional_persistence_seq, function(directional_persistence) {
