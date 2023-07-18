@@ -69,7 +69,8 @@ struct AppliedLocationLikelihood : public AppliedLikelihood {
             double easting, double northing, double semi_major, 
             double semi_minor, double orientation
         ) {
-            ProjectedLocationLikelihood lik = ProjectedLocationLikelihood::from_ellipse(   
+            ProjectedLocationLikelihood lik = 
+                ProjectedLocationLikelihood::from_ellipse(   
                     easting, northing, semi_major, semi_minor, orientation
                 );
             return AppliedLocationLikelihood(lik);
@@ -79,7 +80,7 @@ struct AppliedLocationLikelihood : public AppliedLikelihood {
             double easting, double northing, double hdop, double uere
         ) {
             ProjectedLocationLikelihood lik = 
-            ProjectedLocationLikelihood::from_hdop_uere(   
+                ProjectedLocationLikelihood::from_hdop_uere(   
                     easting, northing, hdop, uere
                 );
             return AppliedLocationLikelihood(lik);
