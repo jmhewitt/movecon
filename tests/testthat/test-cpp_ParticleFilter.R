@@ -162,7 +162,8 @@ tock = Sys.time()
 
 tock - tick
 # Time difference of 1.564818 mins for 10 evaluations
-# Time difference of 16.9716 secs
+# Time difference of 16.9716 secs without filtering distributions
+# Time difference of 22.74933 secs with filtering distributions
 
 ll_seq_val = sapply(ll_seq, function(x) x$ll)
 
