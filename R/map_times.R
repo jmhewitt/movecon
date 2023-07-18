@@ -54,11 +54,8 @@ map_times = function(t0, tf, dt, t) {
     stop('tf must be after last observation time t')
   }
   
-  # discrete time grid
-  tseq = seq(from = t0, to = tf, by = dt)
-  
   # map time steps by rounding to closest match
-  tinds = sapply(t, function(t) which.min(abs(t - tseq)))
+  tinds = round((t - t0)/dt) + 1
   
   if(any(unique(diff(order(tinds))) != 1)) {
     stop('Discretized times must be in increasing order')
