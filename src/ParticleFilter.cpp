@@ -10,21 +10,16 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 
-// [[Rcpp::export]]
-Rcpp::List Test__Particle_Filter_Likelihood(
+Rcpp::List run_particle_filter(
     /* likelihood components */
-    std::vector<double> eastings, std::vector<double> northings, 
-    std::vector<double> semi_majors, std::vector<double> semi_minors,
-    std::vector<double> orientations,
-    std::vector<std::size_t> t,
-    std::size_t nt,
+    std::vector<std::unique_ptr<AppliedLikelihood>> & likelihood_seq,
     /* filter components */
-    Rcpp::XPtr<RookDirectionalStatespace> statespace,
+    Rcpp::XPtr<RookDirectionalStatespace> & statespace,
     Rcpp::XPtr<
         std::vector<RookDirectionalStatespace::StateType*>
-    > initial_latent_state_sample,
+    > & initial_latent_state_sample,
     /* model parameters */
-    double directional_persistence, Eigen::VectorXd beta, double delta
+    double directional_persistence, Eigen::VectorXd & beta, double delta
 ) {
 
     // reset cached state values
@@ -96,14 +91,6 @@ Rcpp::List Test__Particle_Filter_Likelihood(
     }
 
     //
-    // build likelihoods
-    //
-
-    LikelihoodSeqType likelihood_seq = AppliedLikelihoodFamily(
-        eastings, northings, semi_majors, semi_minors, orientations, t, nt
-    );
-
-    //
     // build proposal distributions
     //
 
@@ -164,5 +151,34 @@ Rcpp::List Test__Particle_Filter_Likelihood(
     return Rcpp::List::create(
         Rcpp::Named("ll") = ll,
         Rcpp::Named("filtering_distributions") = filtering_locations
+    );
+}
+
+// [[Rcpp::export]]
+Rcpp::List Test__Particle_Filter_Likelihood(
+    /* likelihood components */
+    std::vector<double> eastings, std::vector<double> northings, 
+    std::vector<double> semi_majors, std::vector<double> semi_minors,
+    std::vector<double> orientations,
+    std::vector<std::size_t> t,
+    std::size_t nt,
+    /* filter components */
+    Rcpp::XPtr<RookDirectionalStatespace> statespace,
+    Rcpp::XPtr<
+        std::vector<RookDirectionalStatespace::StateType*>
+    > initial_latent_state_sample,
+    /* model parameters */
+    double directional_persistence, Eigen::VectorXd beta, double delta
+) {
+    
+    typedef std::vector<std::unique_ptr<AppliedLikelihood>> LikelihoodSeqType;
+
+    LikelihoodSeqType likelihood_seq = AppliedLikelihoodFamily(
+        eastings, northings, semi_majors, semi_minors, orientations, t, nt
+    );
+
+    return run_particle_filter(
+        likelihood_seq, statespace, initial_latent_state_sample,
+        directional_persistence, beta, delta
     );
 }
