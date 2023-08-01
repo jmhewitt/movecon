@@ -182,3 +182,30 @@ Rcpp::List Test__Particle_Filter_Likelihood(
         directional_persistence, beta, delta
     );
 }
+
+// [[Rcpp::export]]
+Rcpp::List Particle_Filter_Likelihood_From_GPS(
+    /* likelihood components */
+    std::vector<double> eastings, std::vector<double> northings, 
+    std::vector<double> hdops, double uere, std::vector<std::size_t> t,
+    std::size_t nt,
+    /* filter components */
+    Rcpp::XPtr<RookDirectionalStatespace> statespace,
+    Rcpp::XPtr<
+        std::vector<RookDirectionalStatespace::StateType*>
+    > initial_latent_state_sample,
+    /* model parameters */
+    double directional_persistence, Eigen::VectorXd beta, double delta
+) {
+    
+    typedef std::vector<std::unique_ptr<AppliedLikelihood>> LikelihoodSeqType;
+
+    LikelihoodSeqType likelihood_seq = AppliedLikelihoodFamilyFromGPS(
+        eastings, northings, hdops, uere, t, nt
+    );
+
+    return run_particle_filter(
+        likelihood_seq, statespace, initial_latent_state_sample,
+        directional_persistence, beta, delta
+    );
+}

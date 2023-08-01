@@ -160,6 +160,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Particle_Filter_Likelihood_From_GPS
+Rcpp::List Particle_Filter_Likelihood_From_GPS(/* likelihood components */     std::vector<double> eastings, std::vector<double> northings, std::vector<double> hdops, double uere, std::vector<std::size_t> t, std::size_t nt, /* filter components */     Rcpp::XPtr<RookDirectionalStatespace> statespace, Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > initial_latent_state_sample, /* model parameters */     double directional_persistence, Eigen::VectorXd beta, double delta);
+RcppExport SEXP _movecon_Particle_Filter_Likelihood_From_GPS(SEXP eastingsSEXP, SEXP northingsSEXP, SEXP hdopsSEXP, SEXP uereSEXP, SEXP tSEXP, SEXP ntSEXP, SEXP statespaceSEXP, SEXP initial_latent_state_sampleSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< /* likelihood components */     std::vector<double> >::type eastings(eastingsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type northings(northingsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type hdops(hdopsSEXP);
+    Rcpp::traits::input_parameter< double >::type uere(uereSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::size_t> >::type t(tSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nt(ntSEXP);
+    Rcpp::traits::input_parameter< /* filter components */     Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<         std::vector<RookDirectionalStatespace::StateType*>     > >::type initial_latent_state_sample(initial_latent_state_sampleSEXP);
+    Rcpp::traits::input_parameter< /* model parameters */     double >::type directional_persistence(directional_persistenceSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Particle_Filter_Likelihood_From_GPS(eastings, northings, hdops, uere, t, nt, statespace, initial_latent_state_sample, directional_persistence, beta, delta));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_gaussian_states
 Rcpp::List sample_gaussian_states(Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, double easting, double northing, double semi_major, double semi_minor, double orientation, std::size_t n);
 RcppExport SEXP _movecon_sample_gaussian_states(SEXP statespace_searchSEXP, SEXP eastingSEXP, SEXP northingSEXP, SEXP semi_majorSEXP, SEXP semi_minorSEXP, SEXP orientationSEXP, SEXP nSEXP) {
@@ -174,6 +195,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type orientation(orientationSEXP);
     Rcpp::traits::input_parameter< std::size_t >::type n(nSEXP);
     rcpp_result_gen = Rcpp::wrap(sample_gaussian_states(statespace_search, easting, northing, semi_major, semi_minor, orientation, n));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sample_gaussian_states_from_hdop_uere
+Rcpp::List sample_gaussian_states_from_hdop_uere(Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, double easting, double northing, double hdop, double uere, std::size_t n);
+RcppExport SEXP _movecon_sample_gaussian_states_from_hdop_uere(SEXP statespace_searchSEXP, SEXP eastingSEXP, SEXP northingSEXP, SEXP hdopSEXP, SEXP uereSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespaceSearch> >::type statespace_search(statespace_searchSEXP);
+    Rcpp::traits::input_parameter< double >::type easting(eastingSEXP);
+    Rcpp::traits::input_parameter< double >::type northing(northingSEXP);
+    Rcpp::traits::input_parameter< double >::type hdop(hdopSEXP);
+    Rcpp::traits::input_parameter< double >::type uere(uereSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_gaussian_states_from_hdop_uere(statespace_search, easting, northing, hdop, uere, n));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -241,7 +278,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_states_at_nearest_location_in_domain", (DL_FUNC) &_movecon_states_at_nearest_location_in_domain, 3},
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 12},
+    {"_movecon_Particle_Filter_Likelihood_From_GPS", (DL_FUNC) &_movecon_Particle_Filter_Likelihood_From_GPS, 11},
     {"_movecon_sample_gaussian_states", (DL_FUNC) &_movecon_sample_gaussian_states, 7},
+    {"_movecon_sample_gaussian_states_from_hdop_uere", (DL_FUNC) &_movecon_sample_gaussian_states_from_hdop_uere, 6},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
     {"_movecon_Test__Location_Based_Movement_Transition_Rate", (DL_FUNC) &_movecon_Test__Location_Based_Movement_Transition_Rate, 5},
     {"_movecon_log_sum", (DL_FUNC) &_movecon_log_sum, 1},

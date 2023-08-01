@@ -60,26 +60,14 @@ std::vector<ProjectedLocationLikelihood> LocationDistributionFamilyFromGPS(
 /**
  * Sample states from a Gaussian distribution constrained to a spatial domain,
  * and with last movement directions uniformly sampled
- * 
 */
-// [[Rcpp::export]]
 Rcpp::List sample_gaussian_states(
     Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, 
-    double easting,
-    double northing,
-    double semi_major,
-    double semi_minor,
-    double orientation,
+    ProjectedLocationLikelihood & sampler,
     std::size_t n
 ) {
 
     typedef RookDirectionalStatespace::StateType StateType;
-
-    // initialize sampler
-    ProjectedLocationLikelihood sampler = 
-        ProjectedLocationLikelihood::from_ellipse(
-            easting, northing, semi_major, semi_minor, orientation
-        );
 
     //
     // initialize output 
@@ -120,5 +108,54 @@ Rcpp::List sample_gaussian_states(
     return Rcpp::List::create(
         Rcpp::Named("states") = states_formatted,
         Rcpp::Named("states_cpp") = state_ptr
+    );
+}
+
+/**
+ * Sample states from a Gaussian distribution constrained to a spatial domain,
+ * and with last movement directions uniformly sampled
+*/
+// [[Rcpp::export]]
+Rcpp::List sample_gaussian_states(
+    Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, 
+    double easting,
+    double northing,
+    double semi_major,
+    double semi_minor,
+    double orientation,
+    std::size_t n
+) {
+    
+    ProjectedLocationLikelihood sampler = 
+        ProjectedLocationLikelihood::from_ellipse(
+            easting, northing, semi_major, semi_minor, orientation
+        );
+
+    return sample_gaussian_states(
+        statespace_search, sampler, n
+    );
+}
+
+/**
+ * Sample states from a Gaussian distribution constrained to a spatial domain,
+ * and with last movement directions uniformly sampled
+*/
+// [[Rcpp::export]]
+Rcpp::List sample_gaussian_states_from_hdop_uere(
+    Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, 
+    double easting,
+    double northing,
+    double hdop, 
+    double uere,
+    std::size_t n
+) {
+
+    ProjectedLocationLikelihood sampler = 
+        ProjectedLocationLikelihood::from_hdop_uere(
+            easting, northing, hdop, uere
+        );
+
+    return sample_gaussian_states(
+        statespace_search, sampler, n
     );
 }
