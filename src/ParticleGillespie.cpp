@@ -1,25 +1,24 @@
-#include "Particle.h"
+#include "ParticleGillespie.h"
 #include "Domain.h"
 #include "Tx.h"
 #include "Directions.h"
 
-#include <RcppEigen.h>
-
 // [[Rcpp::depends(RcppEigen)]]
 
+#include <RcppEigen.h>
+
 /**
- * Forward-simulate movement on a statespace
+ * Forward-simulate movement on a statespace using Gillespie
 */
 // [[Rcpp::export]]
-Rcpp::List Test__Particle_Steps(
+Rcpp::List Test__Particle_Gillespie_Steps(
     Rcpp::XPtr<RookDirectionalStatespace> statespace, 
     std::string last_movement_direction,
     std::size_t easting_ind, 
     std::size_t northing_ind,
     double directional_persistence,
     Eigen::VectorXd beta,
-    double delta,
-    std::size_t nsteps
+    std::vector<double> times
 ) {
 
     // get starting state
@@ -35,13 +34,8 @@ Rcpp::List Test__Particle_Steps(
 
     // construct transition rate evaluator
     typedef location_based_movement<StateType, Eigen::VectorXd> 
-        base_transition_rate;
-    typedef uniformized_rate_evaluator<StateType, base_transition_rate> 
         particle_transition_rate;
-    base_transition_rate location_based_rate(beta);
-    particle_transition_rate uniformized_transition_rate(
-        &location_based_rate, delta
-    );
+    particle_transition_rate location_based_rate(beta);
 
     // construct transition probability evaluator
     typedef directional_transition_probabilities<
@@ -50,11 +44,11 @@ Rcpp::List Test__Particle_Steps(
     particle_transition_probability transition_prob(directional_persistence);
 
     // build a particle at the state
-    Particle<
+    ParticleGillespie<
         StateType, 
         particle_transition_rate,
         particle_transition_probability
-    > particle(uniformized_transition_rate, transition_prob);
+    > particle(location_based_rate, transition_prob);
     particle.state = &state;
 
     // initialize output
@@ -62,8 +56,8 @@ Rcpp::List Test__Particle_Steps(
     path.push_back(format_state(state));
 
     // run forward simulation
-    for(std::size_t i = 0; i < nsteps; ++i) {
-        particle.step();
+    for(auto it = (times.begin()+1); it != times.end(); ++it) {
+        particle.step(*(it-1), *it);
         path.push_back(format_state(*particle.state));
     }
 

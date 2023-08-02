@@ -45,6 +45,10 @@ Particle_Filter_Likelihood_From_GPS <- function(eastings, northings, hdops, uere
     .Call(`_movecon_Particle_Filter_Likelihood_From_GPS`, eastings, northings, hdops, uere, t, nt, statespace, initial_latent_state_sample, directional_persistence, beta, delta)
 }
 
+Test__Particle_Gillespie_Steps <- function(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, times) {
+    .Call(`_movecon_Test__Particle_Gillespie_Steps`, statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, times)
+}
+
 sample_gaussian_states <- function(statespace_search, easting, northing, semi_major, semi_minor, orientation, n) {
     .Call(`_movecon_sample_gaussian_states`, statespace_search, easting, northing, semi_major, semi_minor, orientation, n)
 }

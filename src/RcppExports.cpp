@@ -181,6 +181,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Test__Particle_Gillespie_Steps
+Rcpp::List Test__Particle_Gillespie_Steps(Rcpp::XPtr<RookDirectionalStatespace> statespace, std::string last_movement_direction, std::size_t easting_ind, std::size_t northing_ind, double directional_persistence, Eigen::VectorXd beta, double delta, std::vector<double> times);
+RcppExport SEXP _movecon_Test__Particle_Gillespie_Steps(SEXP statespaceSEXP, SEXP last_movement_directionSEXP, SEXP easting_indSEXP, SEXP northing_indSEXP, SEXP directional_persistenceSEXP, SEXP betaSEXP, SEXP deltaSEXP, SEXP timesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<RookDirectionalStatespace> >::type statespace(statespaceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type last_movement_direction(last_movement_directionSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type easting_ind(easting_indSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type northing_ind(northing_indSEXP);
+    Rcpp::traits::input_parameter< double >::type directional_persistence(directional_persistenceSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type times(timesSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test__Particle_Gillespie_Steps(statespace, last_movement_direction, easting_ind, northing_ind, directional_persistence, beta, delta, times));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_gaussian_states
 Rcpp::List sample_gaussian_states(Rcpp::XPtr<RookDirectionalStatespaceSearch> statespace_search, double easting, double northing, double semi_major, double semi_minor, double orientation, std::size_t n);
 RcppExport SEXP _movecon_sample_gaussian_states(SEXP statespace_searchSEXP, SEXP eastingSEXP, SEXP northingSEXP, SEXP semi_majorSEXP, SEXP semi_minorSEXP, SEXP orientationSEXP, SEXP nSEXP) {
@@ -279,6 +297,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_movecon_Test__Particle_Steps", (DL_FUNC) &_movecon_Test__Particle_Steps, 8},
     {"_movecon_Test__Particle_Filter_Likelihood", (DL_FUNC) &_movecon_Test__Particle_Filter_Likelihood, 12},
     {"_movecon_Particle_Filter_Likelihood_From_GPS", (DL_FUNC) &_movecon_Particle_Filter_Likelihood_From_GPS, 11},
+    {"_movecon_Test__Particle_Gillespie_Steps", (DL_FUNC) &_movecon_Test__Particle_Gillespie_Steps, 8},
     {"_movecon_sample_gaussian_states", (DL_FUNC) &_movecon_sample_gaussian_states, 7},
     {"_movecon_sample_gaussian_states_from_hdop_uere", (DL_FUNC) &_movecon_sample_gaussian_states_from_hdop_uere, 6},
     {"_movecon_Test__Directional_Transition_Probabilities", (DL_FUNC) &_movecon_Test__Directional_Transition_Probabilities, 5},
